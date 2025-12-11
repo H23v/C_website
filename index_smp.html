@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>©_ WebSite — mobile</title>
+
+  <!-- Font + favicon come desktop -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+  <link rel="shortcut icon" href="favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="©_WebSite" />
+  <link rel="manifest" href="favicon/site.webmanifest" />
+
+  <!-- Stili specifici mobile + animazioni ASCII -->
+  <link rel="stylesheet" href="styles_smp.css">
+  <link rel="stylesheet" href="animations.css">
+</head>
+
+<body>
+  <!-- Logo in alto, linka la versione desktop -->
+  <a class="homebrand" href="index.html">
+    <span class="homebrand-symbol">©_</span>
+    <span class="homebrand-text">WebSite</span>
+  </a>
+
+  <main class="stage">
+    <!-- Personaggio ASCII -->
+    <div class="personaggio">
+      <span class="sparkles"></span>
+      <span class="ascii-character"></span>
+
+      <!-- Nuvoletta ASCII (inizialmente nascosta) -->
+      <div id="asciiBubble" class="ascii-bubble" hidden>
+        <pre aria-label="balloon-ascii">
+╭◜◝ ͡ ◜◝╮
+( <span class="icon-ribbon" role="button" tabindex="0" aria-label="ribbon">🎀</span> <span class="icon-idea" role="button" tabindex="0" aria-label="idea">💡</span> )
+╰◟◞ ͜ ◟◞╯
+        </pre>
+      </div>
+    </div>
+
+    <!-- Menu centrale con i 4 tasti -->
+    <nav class="menu" aria-label="Main">
+      <button type="button" class="menu-link menu-artwork">My ArtWork</button>
+      <button type="button" class="menu-link menu-cv">CV</button>
+      <button type="button" class="menu-link menu-me">Me ?</button>
+      <button type="button" class="menu-link menu-html">HTML</button>
+    </nav>
+  </main>
+
+  <!-- ===== Bio-block (visibile solo in modalità Me?) ===== -->
+  <section id="bioMobile" class="bio-block" hidden>
+    <div class="riga r1">
+      ©HIARA BERTASINI &nbsp;&nbsp; A. 2000, Verona (IT)
+    </div>
+
+    <div class="riga r2 rose2">
+      <a href="tel:+393336218323">+39 3336218323</a>
+    </div>
+
+ <div class="riga r3 rose2">
+      <a href="mailto:chiarabertasini@hotmail.it">chiarabertasini@hotmail.it</a>
+    </div>
+
+    <div class="riga r4 rose2">
+      Inhabitant of the Net
+    </div>
+
+    <div class="riga r5 rose2">
+      (っ ͡º ͜ʖ ͡º ς)
+    </div>
+
+    <div class="riga r6 rose2">
+      <a href="https://www.linkedin.com/in/chiara-bertasini" target="_blank" rel="noopener noreferrer">[in]</a>
+    </div>
+  </section>
+
+  <!-- ===== HACK-block ===== -->
+  <section class="hack-block rose2">
+    <div class="riga h1">
+      | Co-founder of HACK
+    </div>
+    <div class="riga h2">
+      ft. Adriana Ribalcenco
+    </div>
+    <div class="riga h3">
+      <a href="https://sites.google.com/view/spacehackweb/spacehack" target="_blank"
+        rel="noopener noreferrer">H_WebSite</a>
+    </div>
+    <div class="riga h4">
+      <a href="mailto:collettivo.hack@gmail.com">collettivo.hack@gmail.com</a>
+    </div>
+  </section>
+
+  <div class="text-fade-mask"></div>
+
+  <!-- ===== Pannello "Me ?" mobile (testo a scorrimento) ===== -->
+  <aside id="mePanelMobile" class="me-panel-mobile" hidden>
+    <div class="lang-toggle" role="tablist" aria-label="Language switch">
+      <button type="button" class="lang-btn" data-lang="ita" aria-selected="false">ITA</button>
+      <span class="slash"> / </span>
+      <button type="button" class="lang-btn active" data-lang="eng" aria-selected="true">ENG</button>
+    </div>
+
+    <div class="panel-content" data-lang="eng"></div>
+    <div class="panel-content" data-lang="ita" hidden></div>
+  </aside>
+
+  <!-- Script: i testi (ME) prima dello script mobile -->
+  <script src="texts.js"></script>
+  <script src="script_smp.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Model Viewer – Animazioni + Zoom</title>
+
+    <!-- Libreria model-viewer -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: #111;
+            color: #eee;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        model-viewer {
+            width: 100%;
+            flex: 1;
+            background: #222;
+        }
+
+        .panel {
+            padding: 10px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            border-top: 1px solid #333;
+            background: #181818;
+        }
+
+        .panel label {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        select,
+        input[type="range"],
+        button {
+            font: inherit;
+        }
+
+        button {
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background: #2a2a2a;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3a3a3a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MODEL VIEWER -->
+    <model-viewer id="viewer" src="stanza.glb" alt="Modello 3D" camera-controls bounds="tight" scale="0.01 0.01 0.01"
+        camera-orbit="0deg 75deg 0.05m" min-camera-orbit="auto auto 0.001m" max-camera-orbit="auto auto 3m"
+        field-of-view="15deg" auto-rotate environment-image="neutral" shadow-intensity="1" animation-loop autoplay>
+    </model-viewer>
+
+    <!-- PANNELLO CONTROLLI -->
+    <div class="panel">
+        <label>
+            Animazione:
+            <select id="animSelect">
+                <option>Carico…</option>
+            </select>
+        </label>
+
+        <button id="playBtn">▶ Play</button>
+        <button id="pauseBtn">⏸ Pausa</button>
+
+        <label>
+            Velocità:
+            <span id="speedLabel">1x</span>
+            <input id="speedRange" type="range" min="0.1" max="3" step="0.1" value="1">
+        </label>
+
+        <label>
+            Zoom (raggio):
+            <span id="zoomLabel">—</span>
+            <!-- 0.01m = 1 cm, 1.5m = lontano -->
+            <input id="zoomRange" type="range" min="0.001" max="1.5" step="0.01" value="0.4">
+        </label>
+
+        <label>
+            <input type="checkbox" id="autoRotateToggle" checked>
+            Auto-rotate
+        </label>
+
+        <button id="resetCameraBtn">Reset camera</button>
+    </div>
+
+    <script>
+        const viewer = document.querySelector('#viewer');
+        const animSelect = document.querySelector('#animSelect');
+        const playBtn = document.querySelector('#playBtn');
+        const pauseBtn = document.querySelector('#pauseBtn');
+        const speedRange = document.querySelector('#speedRange');
+        const speedLabel = document.querySelector('#speedLabel');
+        const autoRotateToggle = document.querySelector('#autoRotateToggle');
+        const resetCameraBtn = document.querySelector('#resetCameraBtn');
+        const zoomRange = document.querySelector('#zoomRange');
+        const zoomLabel = document.querySelector('#zoomLabel');
+
+        // Inizializza zoom label
+        function updateZoomLabel(value) {
+            zoomLabel.textContent = value.toFixed(2) + ' m';
+        }
+
+        // Quando il modello è caricato → popola lista animazioni + inizializza zoom
+        viewer.addEventListener('load', () => {
+            const animations = viewer.availableAnimations || [];
+
+            // --- Animazioni ---
+            animSelect.innerHTML = '';
+
+            if (animations.length === 0) {
+                const opt = document.createElement('option');
+                opt.textContent = 'Nessuna animazione trovata';
+                opt.disabled = true;
+                animSelect.appendChild(opt);
+                animSelect.disabled = true;
+            } else {
+                animations.forEach((name, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name || `Animazione ${index + 1}`;
+                    if (index === 0) opt.selected = true;
+                    animSelect.appendChild(opt);
+                });
+
+                viewer.animationName = animations[0];
+                viewer.play();
+            }
+
+            // --- Zoom iniziale basato sulla camera corrente ---
+            try {
+                const orbit = viewer.getCameraOrbit();
+                const initialRadius = orbit.radius; // in metri
+                zoomRange.value = initialRadius.toFixed(2);
+                updateZoomLabel(initialRadius);
+            } catch (e) {
+                // fallback se qualcosa va storto
+                zoomRange.value = 0.4;
+                updateZoomLabel(0.4);
+            }
+        });
+
+        // Cambio animazione dal select
+        animSelect.addEventListener('change', () => {
+            viewer.animationName = animSelect.value;
+            viewer.play();
+        });
+
+        // Play / Pause
+        playBtn.addEventListener('click', () => viewer.play());
+        pauseBtn.addEventListener('click', () => viewer.pause());
+
+        // Velocità animazione
+        speedRange.addEventListener('input', () => {
+            const speed = parseFloat(speedRange.value);
+            viewer.animationSpeed = speed;
+            speedLabel.textContent = speed.toFixed(1) + 'x';
+        });
+
+        // Auto-rotate on/off
+        autoRotateToggle.addEventListener('change', () => {
+            viewer.autoRotate = autoRotateToggle.checked;
+        });
+
+        // Slider di zoom: forza il raggio della camera
+        zoomRange.addEventListener('input', () => {
+            const r = parseFloat(zoomRange.value);
+            updateZoomLabel(r);
+
+            const orbit = viewer.getCameraOrbit();
+            // getCameraOrbit restituisce theta/phi in radianti
+            const theta = orbit.theta;
+            const phi = orbit.phi;
+
+            // Settiamo camera-orbit in rad + metri
+            viewer.cameraOrbit = `${theta}rad ${phi}rad ${r}m`;
+        });
+
+        // Reset camera (torna ai valori "di default" scelti da noi)
+        resetCameraBtn.addEventListener('click', () => {
+            viewer.cameraOrbit = '0deg 75deg 0.4m';
+            viewer.fieldOfView = '25deg';
+
+            zoomRange.value = 0.4;
+            updateZoomLabel(0.4);
+        });
+    </script>
+</body>
+
+</html>

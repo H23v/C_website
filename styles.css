@@ -1,0 +1,952 @@
+:root {
+  --pink-0: #fcd1fc;
+  /* rosina top */
+  --white: #FFFFFF;
+  --text-rose: #FF56FF;
+  --text-rose-2: #FEAEFE;
+  --gray-1: #7D7D7D;
+  --charcoal: #4E4D4D;
+  --ascii: #818181;
+  --btn-stroke: #ABABC2;
+  --btn-g1: #F6F6F6;
+  --btn-g2: #DDDDDD;
+  --btn-g3: #EFEFEF;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box
+}
+
+html,
+body {
+  height: 100%
+}
+
+html {
+  font-size: 12px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  color: #1a1a1a;
+  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 25%);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Brand */
+.homebrand {
+  position: fixed;
+  left: 1.25rem;
+  top: 3.5rem;
+  text-decoration: none;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  user-select: none;
+  line-height: 1;
+  font-size: 24px;
+  z-index: 41;
+}
+
+.homebrand-symbol {
+  color: var(--charcoal);
+}
+
+.homebrand-text {
+  color: #FFFFFF;
+  background: var(--charcoal);
+}
+
+/* Bottone All Policy */
+.policy-btn {
+  position: fixed;
+  left: 3rem;
+  bottom: 2rem;
+  width: 6.5rem;
+  height: 1.8rem;
+  transform: rotate(-90deg) translateZ(0);
+  transform-origin: left bottom;
+  border: 1px solid var(--btn-stroke);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--btn-g1) 0%, var(--btn-g2) 50%, var(--btn-g3) 100%);
+  color: var(--gray-1);
+  font-size: .7rem;
+  cursor: pointer;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0);
+  will-change: background;
+  image-rendering: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 41;
+  ;
+}
+
+.policy-btn:hover {
+  background: linear-gradient(180deg, var(--btn-g3) 0%, var(--btn-g2) 50%, var(--btn-g1) 100%);
+  color: #4B4B4B;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(90deg, #2222222d 0%, #ffffff1c 50%, #2222222d 100%);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+}
+
+/* Wrapper fisso centrato (come una card), nessun bordo */
+.notepad-wrap {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(.86);
+  opacity: 0;
+  width: 550px;
+  z-index: 1001;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.overlay.active .notepad-wrap {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* immagine notepad pulita, piccola e con ombra */
+.notepad-img {
+  width: 550px;
+  height: auto;
+  max-height: 71vh;
+  object-fit: contain;
+  z-index: 1;
+  border: none;
+}
+
+/* testo sopra il notepad (rimane nei limiti visivi) */
+.notepad-text {
+  position: fixed;
+  left: 80px;
+  top: 123px;
+  width: 395px;
+  height: 330px;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.4;
+  overflow: auto;
+  outline: none;
+  z-index: 2;
+}
+
+/* Bottone lingua sulla "finestra" */
+.notepad-lang {
+  position: absolute;
+  top: 70px;
+  left: 280px;
+  z-index: 3;
+  width: 30px;
+  height: 37px;
+  color: #292929;
+  border-radius: 5px;
+  background-color: transparent;
+  border: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+}
+
+.notepad-lang:hover {
+  background: #2e2e2e08;
+  color: #000000;
+}
+
+.close-notepad {
+  position: absolute;
+  top: calc(50% - 217px);
+  /* centrato rispetto al notepad */
+  right: calc(50% - 214px);
+  width: 43px;
+  /* mantieni la dimensione più grande come default */
+  height: auto;
+  border: none;
+  background: transparent;
+  color: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 3;
+  overflow: hidden;
+}
+
+/* layer invisibile che contiene l'immagine di chiusura */
+.close-notepad::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("notepad_close.png") no-repeat center center / contain;
+  opacity: 0;
+  transition: opacity 0.10s ease-in-out;
+}
+
+/* dissolvenza morbida solo sull'immagine */
+.close-notepad:hover::after {
+  opacity: 1;
+}
+
+.notepad-text::after {
+  content: "|";
+  display: inline-block;
+  color: #000000;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+/* cursore decorativo sparisce quando l’utente clicca per scrivere */
+.notepad-text:focus::after {
+  display: none;
+}
+
+/* animazione */
+@keyframes blink {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Palco */
+.stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+/* Personaggio */
+.personaggio {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: auto;
+  z-index: 110;
+  cursor: pointer;
+}
+
+.personaggio .sparkles {
+  pointer-events: none;
+  display: block;
+  font-size: 1.1rem;
+  transform: translateX(-20%);
+  color: var(--ascii);
+  margin-bottom: .15rem;
+}
+
+.personaggio .ascii-character {
+  pointer-events: none;
+  display: block;
+  font-size: 1.25rem;
+  color: var(--ascii);
+}
+
+.personaggio .voice {
+  display: block;
+  font-size: .001px;
+}
+
+.personaggio.selected .sparkles,
+.personaggio.selected .ascii-character {
+  animation-play-state: paused !important;
+  /* mette in pausa le animazioni CSS */
+}
+
+/* Menu con posizionamento manuale */
+.menu {
+  position: absolute;
+  top: 46.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+}
+
+.menu-link {
+  position: absolute;
+  color: var(--gray-1);
+  text-decoration: none;
+  font-size: .82rem;
+  transition: opacity .2s ease;
+  white-space: nowrap;
+}
+
+.menu-link:hover {
+  opacity: .65
+}
+
+.menu-artwork {
+  left: -125px;
+  top: 20px;
+}
+
+.menu-cv {
+  left: -50px;
+  top: -10px;
+}
+
+.menu-me {
+  left: -10px;
+  top: -40px;
+}
+
+.menu-html {
+  left: 32px;
+  top: -70px;
+}
+
+/* Righe info */
+.bio-block {
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: .72rem;
+  line-height: 1.15;
+  width: min(90vw, 780px);
+}
+
+.bio-block .riga {
+  position: relative;
+  display: flex;
+  gap: 2.25rem;
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+
+.bio-block .r1 {
+  color: var(--text-rose);
+  transform: translateX(7rem) translateY(0rem);
+  gap: 0.1rem;
+}
+
+.bio-block .r2 {
+  transform: translateX(7rem) translateY(.1rem);
+  gap: 3.5rem;
+}
+
+.bio-block .r3 {
+  transform: translateX(20.5rem) translateY(.1rem);
+}
+
+.bio-block .r4 {
+  transform: translateX(20.5rem) translateY(.15rem);
+  gap: 3rem;
+}
+
+.bio-block .r5 {
+  transform: translateX(29.2rem) translateY(.2rem);
+  gap: 3.7rem;
+}
+
+.bio-block .r6 {
+  transform: translateX(38.7rem) translateY(.1rem);
+}
+
+.rose2 {
+  color: var(--text-rose-2);
+}
+
+/* HACK block */
+.hack-block {
+  position: absolute;
+  top: 66%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: .72rem;
+  line-height: 1.15;
+}
+
+.hack-block .riga {
+  white-space: nowrap;
+}
+
+.hack-block .h1 {
+  transform: translateX(13rem) translateY(.2rem);
+}
+
+.hack-block .h2 {
+  transform: translateX(13rem) translateY(.25rem);
+}
+
+.hack-block .h3 {
+  transform: translateX(20.8rem) translateY(.25rem);
+}
+
+.hack-block .h4 {
+  transform: translateX(24.7rem) translateY(.15rem);
+}
+
+/* ===== Pannello laterale "Me ?" ===== */
+.side-panel {
+  position: fixed;
+  top: 7%;
+  right: 6rem;
+  width: 160px;
+  /* puoi stringere/allargare liberamente */
+  max-height: 78vh;
+  overflow: auto;
+  background: transparent;
+  /* <- niente box, niente card */
+  border: none;
+  padding: 0;
+  z-index: 900;
+  /* sotto al notepad (1000) */
+  color: #434343;
+
+  /* transizione romantica */
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .8s ease, transform .8s ease;
+}
+
+.side-panel.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Linguetta ITA/ENG (sottile) */
+.lang-toggle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: .72rem;
+  color: var(--gray-1);
+  margin-bottom: 8px;
+  user-select: none;
+}
+
+.lang-toggle .slash {
+  opacity: .6;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #434343;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.lang-btn.active {
+  color: #111;
+  text-decoration: underline;
+  text-decoration-color: var(--charcoal);
+  text-underline-offset: 2px;
+}
+
+.panel-content {
+  font-size: .72rem;
+  color: #434343;
+  white-space: pre-wrap;
+}
+
+/* Stato attivo dei bottoni del menu */
+.menu-link.active {
+  color: var(--text-rose);
+  /* colore rosa brillante */
+  transition: color .25s ease;
+  /* dissolvenza morbida */
+  text-decoration: underline;
+  text-decoration-color: var(--text-rose);
+  text-underline-offset: 2px;
+  opacity: .65;
+}
+
+
+/* Nuvoletta ASCII */
+.ascii-bubble[hidden] {
+  display: none;
+}
+
+.ascii-bubble {
+  position: absolute;
+  left: 40px;
+  top: -90px;
+  z-index: 10;
+  pointer-events: auto;
+  user-select: none;
+  white-space: pre;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  line-height: 1.1;
+  color: #818181;
+  opacity: 0;
+  z-index: 110;
+  transform: translateY(2px);
+}
+
+/* stato mostrato: fade-in + movimento nuvola continuo */
+.ascii-bubble.show {
+  animation:
+    asciiFade .28s ease-out forwards,
+    cloudFloat 6s ease-in-out .28s infinite alternate;
+}
+
+/* transizioni */
+@keyframes asciiFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* “nuvoletta in movimento” (X/Y lievi; cambia ampiezza se vuoi più evidente) */
+@keyframes cloudFloat {
+  0% {
+    transform: translate(0px, 0px);
+  }
+
+  50% {
+    transform: translate(3px, -2px);
+  }
+
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+/* icone cliccabili dentro la nuvoletta */
+.ascii-bubble .icon-ribbon,
+.ascii-bubble .icon-idea {
+  cursor: pointer;
+  transition: transform .15s ease, filter .15s ease;
+  z-index: 110;
+}
+
+.ascii-bubble .icon-ribbon:hover,
+.ascii-bubble .icon-idea:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 4px rgba(255, 86, 255, .6));
+}
+
+/* focus da tastiera (accessibilità) */
+.ascii-bubble .icon-ribbon:focus,
+.ascii-bubble .icon-idea:focus {
+  outline: none;
+  text-shadow: 0 0 6px rgba(255, 86, 255, .7);
+}
+
+.personaggio.selected .ascii-character {
+  animation: none !important;
+}
+
+.personaggio.selected .ascii-character::before,
+.personaggio.selected .ascii-character::after {
+  content: none !important;
+  animation: none !important;
+}
+
+/* (già consigliato) il container riceve i click */
+.personaggio {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.personaggio .sparkles,
+.personaggio .ascii-character {
+  pointer-events: none;
+}
+
+/* ===== BG Gallery (dietro la scena) ===== */
+.bg-gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* dietro alla scena */
+  pointer-events: none;
+  /* niente click sullo sfondo */
+  opacity: 0;
+  /* nascosta finché spenta */
+  transition: opacity .25s ease;
+}
+
+.bg-gallery.active {
+  opacity: 1;
+}
+
+.bg-gallery .layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  /* crossfade via .show */
+  transition: opacity var(--fade, 450ms) ease;
+  filter: saturate(1.02) contrast(1.02);
+}
+
+.bg-gallery .layer.show {
+  opacity: 1;
+}
+
+/* === ZONE GALLERY: sinistra/destra, con buco centrale “safe” === */
+/* larghezza della zona centrale sicura (niente overlay/cursori) */
+:root {
+  --safeW: 520px;
+}
+
+/* puoi cambiare, o verrà impostato via JS all’apertura */
+
+.gallery-zone {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  z-index: 90;
+  /* sotto homebrand/policy (120) e personaggio (110) */
+  background: transparent;
+  pointer-events: none;
+  /* spente di default */
+  cursor: auto;
+  /* cursore normale finché la gallery è chiusa */
+}
+
+/* le zone coprono metà schermo meno metà safeW (buco centrale) */
+.gallery-zone.zone-left {
+  left: 0;
+  width: calc((100vw - var(--safeW)) / 2);
+}
+
+.gallery-zone.zone-right {
+  right: 0;
+  width: calc((100vw - var(--safeW)) / 2);
+}
+
+/* attive solo quando la gallery è aperta */
+body.gallery-active .gallery-zone {
+  pointer-events: auto;
+  cursor: none;
+  /* nasconde il cursore standard nelle zone */
+}
+
+/* cursore testuale che segue il mouse */
+.gallery-zone::after {
+  content: attr(data-cursor);
+  position: fixed;
+  left: var(--cursor-x, -9999px);
+  top: var(--cursor-y, -9999px);
+  font: 14px/1 'Inter', sans-serif;
+  color: #FF56FF;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity .12s ease;
+  z-index: 9999;
+}
+
+/* visibile solo quando la gallery è attiva e la zona ha l’etichetta */
+body.gallery-active .gallery-zone[data-cursor]::after {
+  opacity: 1;
+}
+
+/* assicurati che questi restino cliccabili sempre */
+.homebrand,
+.policy-btn {
+  position: fixed;
+  z-index: 120 !important;
+  pointer-events: auto;
+}
+
+/* personaggio sopra alle zone (ma al centro le zone non esistono) */
+.personaggio {
+  z-index: 110;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.ascii-bubble {
+  z-index: 111;
+}
+
+/* Didascalia ruotata vicino ad "All Policy" */
+.img-caption {
+  position: fixed;
+  right: 0%;
+  bottom: 0rem;
+  height: 1.8rem;
+  transform-origin: right bottom;
+  z-index: 40;
+  border-radius: 0.6rem 0rem 0rem 0rem;
+  border: 1px solid #FF56FF;
+  background: linear-gradient(180deg, #fec9fe 0%, #fb74fb 50%, #FEAEFE 100%);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0);
+  color: #ffffff;
+  font-size: .8rem;
+
+  display: inline-block;
+  /* <-- fa adattare il background al testo */
+  padding: 3px 10px;
+  /* <-- 5px sopra/sotto, 14px ai lati = più spazio */
+  min-width: fit-content;
+
+  opacity: 0;
+  transition: opacity .25s ease;
+  user-select: none;
+  pointer-events: none;
+}
+
+.bg-gallery.active~.img-caption {
+  opacity: 1;
+}
+
+/* Assicuriamoci che la scena resti sopra allo sfondo */
+.stage {
+  position: relative;
+  z-index: 10;
+}
+
+/* Se il personaggio non riceve click, riabilitiamoli */
+.personaggio {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.personaggio .sparkles,
+.personaggio .ascii-character {
+  pointer-events: none;
+}
+
+/* ===== Modalità Portfolio (My ArtWork / HTML) ===== - Sposta i due bottoni a sinistra, impilati - Nasconde CV e Me? - Compatta bio, hack e personaggio in alto vicino al brand - Transizioni morbide ==================================================== */
+body.mode-portfolio .menu {
+  position: fixed;
+  left: 2.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  height: auto;
+  z-index: 105;
+}
+
+body.mode-portfolio .menu-link {
+  position: static;
+  display: block;
+  margin: 0 0 .6rem 0;
+  font-size: .95rem;
+  color: var(--charcoal);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .25s ease, transform .25s ease, color .25s ease;
+}
+
+body.mode-portfolio .menu-artwork,
+body.mode-portfolio .menu-html {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* bottone attivo: evidenziato (semplice e pulito) */
+body.mode-portfolio .menu-artwork.active,
+body.mode-portfolio .menu-html.active {
+  color: #FF56FF;
+}
+
+/* Nascondi gli altri due pulsanti */
+body.mode-portfolio .menu-cv,
+body.mode-portfolio .menu-me {
+  display: none !important;
+}
+
+body.mode-portfolio .bio-block {
+  position: fixed;
+  top: 3.6rem;
+  left: 8rem;
+  transform: none;
+  width: auto;
+  font-size: .72rem;
+  z-index: 104;
+}
+
+body.mode-portfolio .hack-block {
+  position: fixed;
+  top: 9.1rem;
+  left: 36rem;
+  transform: none;
+  z-index: 104;
+}
+
+body.mode-portfolio .personaggio {
+  position: fixed;
+  top: 9rem;
+  left: calc(36rem + 430px);
+  transform: none;
+  z-index: 106;
+}
+
+body.mode-portfolio .stage {
+  transition: opacity .25s ease;
+}
+
+.personaggio,
+.bio-block,
+.hack-block {
+  transition: opacity .28s ease;
+}
+
+/* ===== Artwork Grid (sezione centrale) ===== */
+.artwork-grid {
+  position: fixed;
+  left: 70rem;
+  top: 15rem;
+  /* sotto al brand/bio */
+  transform: translateX(-50%);
+  width: min(100vw - 8rem, 1280px);
+  height: calc(100vh - 14rem);
+  padding: 1rem 0.5rem 2rem;
+  overflow: auto;
+  z-index: 80;
+  /* sotto al menu (999) e personaggio (106) */
+}
+
+/* 3 colonne fluide con gap equilibrato */
+.artwork-grid__inner {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 4rem 4rem;
+  /* righe / colonne */
+}
+
+.art-card {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  grid-auto-rows: auto;
+  row-gap: .85rem;
+  column-gap: 0.1rem;
+  font-size: .75rem;
+  line-height: 1.25;
+  color: var(--charcoal);
+}
+
+/* “with HACK” opzionale */
+.art-card__hack {
+  grid-column: 1 / -1;
+  color: #B0B0B0;
+  margin-bottom: 0rem;
+  transform: translateY(1.8rem);
+}
+
+.art-card__hack em {
+  font-style: italic;
+}
+
+.art-card__hack .hack-name {
+  font-style: normal;
+}
+
+.art-card__hack--copyright {
+  color: #7a7a7a00;
+  /* puoi scegliere una tinta più o meno scura */
+  font-style: normal;
+  /* niente corsivo */
+}
+
+/* Titolo: prima riga, tutta larghezza */
+.art-card__title {
+  grid-column: 1 / -1;
+  font-weight: 400;
+  transform: translateY(0.8rem);
+  color: #2a2a2a;
+  margin-top: 0.3rem;
+}
+
+/* Righe 2-3: incolonnate */
+.art-card__year,
+.art-card__aggiunta {
+  grid-column: 1;
+  white-space: nowrap;
+}
+
+.art-card__descrizione,
+.art-card__esposizione {
+  grid-column: 2;
+  max-width: 12rem;
+}
+
+/* Solo quando sei in modalità portfolio mostriamo la griglia */
+body:not(.mode-portfolio) .artwork-grid {
+  display: none;
+}
+
+/* ===== Scrollbar invisibile ===== */
+.artwork-grid {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+.artwork-grid::-webkit-scrollbar {
+  /* Chrome, Safari */
+  display: none;
+}
+
+/* ===== Effetto dissolvenza agli estremi ===== */
+
+/* Contenitore: serve per gestire il fade sopra e sotto */
+.artwork-grid {
+  position: fixed;
+  overflow-y: auto;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%);
+}
+
+/* ===== Bottone Exhibition ===== */
+/* Di base nascosto */
+.menu-exhibition {
+  display: none;
+}
+
+/* In modalità portfolio, mostralo SOLO quando sei in Artwork */
+body.mode-portfolio.show-exhibition .menu-exhibition {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  /* armonizza con gli altri link del menu */
+  font-size: .95rem;
+  color: var(--charcoal);
+  transition: opacity .25s ease, transform .25s ease, color .25s ease;
+  margin-top: .2rem;
+}
+
+/* stato attivo (rosa) come gli altri */
+.menu-exhibition.active {
+  color: #FF56FF;
+}
+
+/* Fade del contenuto centrale */
+.artwork-grid {
+  transition: opacity .22s ease;
+}
+
+/* Exhibition evidenziato quando attivo */
+body.mode-portfolio.show-exhibition .menu-exhibition.active {
+  color: #FF56FF;
+}

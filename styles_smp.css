@@ -1,0 +1,520 @@
+:root {
+  --pink-0: #fcd1fc;
+  /* rosina top */
+  --white: #FFFFFF;
+  --text-rose: #FF56FF;
+  --text-rose-2: #FEAEFE;
+  --gray-1: #7D7D7D;
+  --charcoal: #4E4D4D;
+  --ascii: #818181;
+}
+
+/* reset base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  /* niente alone azzurrino al tap */
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  /* blocca lo scroll */
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  color: #1a1a1a;
+  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 55%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background 0.35s ease;
+}
+
+/* quando sono in modalità Me? sfumo a bianco pieno */
+body.me-view {
+  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 55%);
+}
+
+/* niente outline blu quando clicchi */
+button,
+[role="button"],
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus,
+[role="button"]:focus,
+a:focus {
+  outline: none;
+}
+
+/* helper colore rose2 (usata anche su hack-block) */
+.rose2 {
+  color: var(--text-rose-2);
+}
+
+/* Brand come desktop, solo un filo più vicino ai bordi */
+.homebrand {
+  position: fixed;
+  left: 1.25rem;
+  top: 2.4rem;
+  text-decoration: none;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  user-select: none;
+  line-height: 1;
+  font-size: 24px;
+  z-index: 41;
+}
+
+.homebrand-symbol {
+  color: var(--charcoal);
+}
+
+.homebrand-text {
+  color: #FFFFFF;
+  background: var(--charcoal);
+}
+
+/* Palco mobile */
+.stage {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 5rem 1.5rem 3.5rem;
+  transition: opacity 0.35s ease;
+}
+
+/* Personaggio in basso, più grande */
+.personaggio {
+  position: fixed;
+  left: 60%;
+  bottom: 2.8rem;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: auto;
+  z-index: 15;
+  cursor: pointer;
+  transition: opacity 0.35s ease;
+}
+
+.personaggio .sparkles {
+  pointer-events: none;
+  display: block;
+  font-size: 1.1rem;
+  color: var(--ascii);
+  transform: translateX(-20%);
+  margin-bottom: .01rem;
+}
+
+.personaggio .ascii-character {
+  pointer-events: none;
+  display: block;
+  font-size: 1.1rem;
+  color: var(--ascii);
+}
+
+/* blocca le animazioni quando selezionato (come desktop) */
+.personaggio.selected .sparkles,
+.personaggio.selected .ascii-character {
+  animation-play-state: paused !important;
+}
+
+.personaggio.selected .ascii-character::before,
+.personaggio.selected .ascii-character::after {
+  content: none !important;
+  animation: none !important;
+}
+
+/* Menu: colonna sopra il personaggio */
+.menu {
+  position: fixed;
+  left: 50%;
+  bottom: 7.5rem;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  z-index: 10;
+  transition: opacity 0.35s ease;
+}
+
+/* Bottoni stile link, con underline animata ereditata da animations.css (.menu-link::after) */
+.menu-link {
+  background: transparent;
+  border: none;
+  padding: 0.15rem 0.2rem;
+  font-size: 0.95rem;
+  color: var(--gray-1);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+}
+
+/* posizioni personalizzate dei 4 tasti */
+.menu-artwork {
+  position: relative;
+  left: -75px;
+  top: 110px;
+}
+
+.menu-cv {
+  position: relative;
+  left: -5px;
+  top: 50px;
+}
+
+.menu-me {
+  position: relative;
+  left: 40px;
+  top: -10px;
+}
+
+.menu-html {
+  position: relative;
+  left: 90px;
+  top: -70px;
+}
+
+.menu-link:hover {
+  opacity: 0.7;
+}
+
+/* stato “attivo” (se in futuro lo useremo) */
+.menu-link.active {
+  color: var(--text-rose);
+  opacity: .85;
+}
+
+/* Nuvoletta ASCII adattata per mobile */
+.ascii-bubble[hidden] {
+  display: none;
+}
+
+.ascii-bubble {
+  position: absolute;
+  left: 0rem;
+  bottom: 13rem;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  user-select: none;
+  white-space: pre;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 18px;
+  line-height: 1.1;
+  color: var(--ascii);
+  opacity: 0;
+  z-index: 18;
+  transition: opacity 0.28s ease;
+}
+
+/* animazione di comparsa + leggero float (come desktop) */
+.ascii-bubble.show {
+  animation:
+    asciiFade .7s ease-out forwards,
+    cloudFloat 3s ease-in-out .9s infinite alternate;
+}
+
+@keyframes asciiFade {
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes cloudFloat {
+  0% {
+    transform: translate(-50%, 0);
+  }
+
+  50% {
+    transform: translate(-50%, -5px);
+  }
+
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+
+/* icone cliccabili dentro la nuvoletta */
+.ascii-bubble .icon-ribbon,
+.ascii-bubble .icon-idea {
+  cursor: pointer;
+  transition: transform .15s ease, filter .15s ease;
+}
+
+.ascii-bubble .icon-ribbon:hover,
+.ascii-bubble .icon-idea:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 4px rgba(255, 86, 255, .6));
+}
+
+/* focus da tastiera (accessibilità) */
+.ascii-bubble .icon-ribbon:focus,
+.ascii-bubble .icon-idea:focus {
+  outline: none;
+  text-shadow: 0 0 6px rgba(255, 86, 255, .7);
+}
+
+/* ===== Modalità Me? : fade out/in ===== */
+
+/* quando me-view è attivo:
+   - spariscono personaggio, menu, bubble, palco */
+body.me-view .stage,
+body.me-view .personaggio,
+body.me-view .menu,
+body.me-view .ascii-bubble {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== Bio-block mobile ===== */
+.bio-block {
+  position: fixed;
+  top: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: .65rem;
+  line-height: 1.15;
+  width: min(90vw, 780px);
+  color: #434343;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.bio-block .riga {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.bio-block .r1 {
+  color: var(--text-rose);
+  transform: translateX(.6rem) translateY(0rem);
+}
+
+.bio-block .r2 {
+  color: var(--text-rose-2);
+  transform: translateX(.6rem) translateY(0rem);
+}
+
+.bio-block .r3 {
+  color: var(--text-rose-2);
+  transform: translateX(7.9rem) translateY(-0.7rem);
+}
+
+.bio-block .r4 {
+  color: var(--text-rose-2);
+  transform: translateX(13.7rem) translateY(-0.7rem);
+}
+
+.bio-block .r5 {
+  color: var(--text-rose-2);
+  transform: translateX(12.7rem) translateY(-0.7rem);
+}
+
+.bio-block .r6 {
+  color: var(--text-rose-2);
+  transform: translateX(17.8rem) translateY(-0.7rem);
+}
+
+/* in modalità Me? si vede */
+body.me-view .bio-block {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== HACK-block mobile (nuovo, come gli altri blocchi) ===== */
+
+.hack-block {
+  position: fixed;
+  top: 8.4rem; /* leggermente sotto la bio */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: .65rem;
+  line-height: 1.15;
+  width: min(90vw, 780px);
+  color: var(--text-rose-2);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.hack-block .riga {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.hack-block .h1 {
+  transform: translateX(3rem) translateY(.3rem);
+}
+
+.hack-block .h2 {
+  transform: translateX(3rem) translateY(.3rem);
+}
+
+.hack-block .h3 {
+  transform: translateX(9.6rem) translateY(.3rem);
+}
+
+.hack-block .h4 {
+  transform: translateX(12.9rem) translateY(.3rem);
+}
+
+
+/* in modalità Me? si vede anche l'hack-block */
+body.me-view .hack-block {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.bio-block a,
+.hack-block a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bio-block a:hover,
+.hack-block a:hover {
+  text-decoration: underline;
+}
+
+.text-fade-mask {
+  position: fixed;
+  left: 0;
+  top: 12rem;       /* la regolerai tu */
+  width: 100vw;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    #ffe7ff 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 21;
+
+  opacity: 0;                /* di default NON visibile */
+  transition: opacity .3s ease;
+}
+
+/* la linea sfumata si vede solo in modalità Me? */
+body.me-view .text-fade-mask {
+  opacity: 1;
+}
+
+/* ===== Pannello Me? mobile ===== */
+
+.me-panel-mobile {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 12rem;
+  width: min(95vw, 750px);
+  max-height: calc(100vh - 15rem);
+  overflow-y: auto;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 20;
+
+  background: #ff000000;           /* sfondo pieno per la dissolvenza */
+  -ms-overflow-style: none;      /* IE / Edge: niente scrollbar */
+  scrollbar-width: none;         /* Firefox: niente scrollbar */
+}
+
+/* nascondi scrollbar su WebKit */
+.me-panel-mobile::-webkit-scrollbar {
+  display: none;
+}
+
+/* toggle lingua, ripreso dal desktop */
+.lang-toggle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 1rem;
+  color: #5a5959;
+  margin-bottom: 2rem;
+  user-select: none;
+}
+
+.lang-toggle .slash {
+  opacity: 1;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: transparent;
+  transition: color .15s ease, text-decoration-color .15s ease, opacity .15s ease;
+}
+
+/* attivo: forte e sottolineato */
+.lang-btn.active {
+  color: var(--charcoal);
+  text-decoration-color: var(--charcoal);
+  text-underline-offset: 2px;
+  opacity: 1;
+}
+
+/* NON attivo: più chiaro/opaco */
+.lang-btn:not(.active) {
+  color: #b8b8b8;
+  opacity: 0.6;
+}
+
+.panel-content {
+  font-size: .75rem;
+  color: #5a5959;
+  white-space: pre-wrap;
+}
+
+/* in modalità Me? si vede il pannello */
+body.me-view .me-panel-mobile {
+  opacity: 1;
+}
+
+/* piccola ottimizzazione per schermi molto stretti */
+@media (max-width: 360px) {
+  .menu-link {
+    font-size: 0.85rem;
+  }
+
+  .ascii-bubble {
+    font-size: 11px;
+  }
+
+  .bio-block {
+    font-size: .68rem;
+  }
+
+  .hack-block {
+    font-size: .68rem;
+  }
+
+  .panel-content {
+    font-size: .68rem;
+  }
+}
+

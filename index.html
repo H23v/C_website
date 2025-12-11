@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>©_ WebSite</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+  <link rel="shortcut icon" href="favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="©_WebSite" />
+  <link rel="manifest" href="favicon/site.webmanifest" />
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="animations.css">
+
+  <script>
+    (function () {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const isMobileUA = /android|iphone|ipad|ipod|windows phone|mobile/i.test(ua);
+      const isTinyViewport = Math.min(window.innerWidth, window.innerHeight) < 640;
+      if ((isMobileUA || isTinyViewport) && !location.pathname.endsWith('index_smp.html')) {
+        location.href = 'index_smp.html';
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <!-- Logo -->
+  <a class="homebrand" href="#">
+    <span class="homebrand-symbol">©_</span>
+    <span class="homebrand-text">WebSite</span>
+  </a>
+
+  <!-- Bottone Policy -->
+  <button class="policy-btn">All Policy</button>
+
+  <!-- Scena centrale -->
+  <main class="stage">
+    <div class="personaggio">
+      <span class="sparkles"></span>
+      <span class="ascii-character"></span>
+
+      <!-- Nuvoletta ASCII (inizialmente nascosta) -->
+      <div id="asciiBubble" class="ascii-bubble" hidden>
+        <pre aria-label="balloon-ascii">
+              ‧₊˚.     
+   ╭◜◝ ͡ ◜◝╮   
+( <span class="icon-ribbon" role="button" tabindex="0" aria-label="ribbon">🎀</span> <span class="icon-idea" role="button" tabindex="0" aria-label="idea">💡</span> )
+╰◟◞ ͜ ◟◞
+. ⋆
+</pre>
+      </div>
+    </div>
+
+    <div id="artworkGrid" class="artwork-grid" hidden></div>
+
+    <nav class="menu">
+      <a href="#" class="menu-link menu-artwork">My ArtWork</a>
+      <a href="#" class="menu-link menu-cv">CV</a>
+      <a href="#" class="menu-link menu-me">Me ?</a>
+      <a href="#" class="menu-link menu-html">HTML</a>
+      <a href="#" class="menu-link menu-exhibition">Exhibition</a>
+    </nav>
+
+    <!-- ===== Pannello laterale "Me ?" ===== -->
+    <aside id="mePanel" class="side-panel" hidden>
+      <div class="lang-toggle" role="tablist" aria-label="Language switch">
+        <button type="button" class="lang-btn" data-lang="ita" aria-selected="false">ITA</button>
+        <span class="slash"> / </span>
+        <button type="button" class="lang-btn active" data-lang="eng" aria-selected="true">ENG</button>
+      </div>
+
+      <div class="panel-content" data-lang="eng" style="white-space: pre-wrap;"></div>
+      <div class="panel-content" data-lang="ita" hidden style="white-space: pre-wrap;"></div>
+    </aside>
+    <!-- ===== /Pannello "Me ?" ===== -->
+
+    <section class="bio-block">
+      <div class="riga r1">©HIARA BERTASINI &nbsp;&nbsp; A. 2000, Verona (IT)</div>
+      <div class="riga r2 rose2"><span>MyWebSite</span><span>@chiara_bertasini</span></div>
+      <div class="riga r3 rose2"><span>chiarabertasini@hotmail.it</span></div>
+      <div class="riga r4 rose2"><span>+39 3336218323</span><span>Inhabitant of the Net</span></div>
+      <div class="riga r5 rose2"><span>(っ ͡º ͜ʖ ͡º ς)</span><span>GitHub</span></div>
+      <div class="riga r6 rose2">[in]</div>
+    </section>
+
+    <section class="hack-block rose2">
+      <div class="riga h1">| Co-founder of HACK</div>
+      <div class="riga h2">ft. Adriana Ribalcenco</div>
+      <div class="riga h3">H_WebSite</div>
+      <div class="riga h4">collettivo.hack@gmail.com</div>
+    </section>
+  </main>
+
+  <!-- ===== Galleria di sfondo controllata dal tasto 🎀 ===== -->
+  <div id="bgGallery" class="bg-gallery" aria-hidden="true">
+    <img class="layer layer-a" alt="">
+    <img class="layer layer-b" alt="">
+  </div>
+  <!-- Aree cliccabili per “Prima” e “Dopo” -->
+  <div class="gallery-zone zone-left" aria-label="Previous"></div>
+  <div class="gallery-zone zone-right" aria-label="Next"></div>
+  <div id="imgCaption" class="img-caption" aria-live="polite"></div>
+  <!-- ===== /Galleria ===== -->
+
+  <!-- ===== Overlay con immagine notepad ===== -->
+  <div id="policyOverlay" class="overlay" hidden>
+    <div class="notepad-wrap" role="dialog" aria-modal="true">
+      <img src="notepad.png" alt="Notepad" class="notepad-img">
+      <button id="langPolicyBtn" class="notepad-lang" type="button" aria-label="Switch language">🇮🇹</button>
+      <button class="close-notepad" type="button" aria-label="Chiudi">×</button>
+      <div id="policyText" class="notepad-text" contenteditable="true" data-default=""></div>
+    </div>
+  </div>
+
+  <!-- Script: i dati della gallery DEVONO venire prima di script.js -->
+  <script src="myartwork-txt.js"></script>
+  <script src="myartwork.js"></script>
+  <script src="immagini-selezionate.js"></script>
+  <script src="texts.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
