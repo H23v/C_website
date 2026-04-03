@@ -1,16 +1,16 @@
 :root {
-  --pink-0: #fcd1fc;
-  /* rosina top */
-  --white: #FFFFFF;
-  --text-rose: #FF56FF;
-  --text-rose-2: #FEAEFE;
-  --gray-1: #7D7D7D;
-  --charcoal: #4E4D4D;
+  --pink-0: #ffd3ff;
+  --white: #ffffff;
+  --text-rose: #ff56ff;
+  --text-rose-2: #feaefe;
+  --gray-1: #7d7d7d;
+  --charcoal: #4e4d4d;
   --ascii: #818181;
-  --btn-stroke: #ABABC2;
-  --btn-g1: #F6F6F6;
-  --btn-g2: #DDDDDD;
-  --btn-g3: #EFEFEF;
+  --btn-stroke: #ababc2;
+  --btn-g1: #f6f6f6;
+  --btn-g2: #dddddd;
+  --btn-g3: #efefef;
+  --safeW: 520px;
 }
 
 [hidden] {
@@ -19,12 +19,12 @@
 
 /* Reset */
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 html,
 body {
-  height: 100%
+  height: 100%;
 }
 
 html {
@@ -33,27 +33,51 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  font-family: Helvetica, Arial, sans-serif;
   color: #1a1a1a;
-  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 25%);
+  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 5%);
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+/* Transizioni globali elementi che si muovono */
+.txt-index,
+.personaggio,
+.bio-block,
+.hack-block,
+.menu,
+.homebrand,
+.policy-btn,
+.artwork-grid,
+.work-viewer,
+.cv-info {
+  transition:
+    top .7s ease,
+    left .7s ease,
+    right .7s ease,
+    bottom .7s ease,
+    width .7s ease,
+    height .7s ease,
+    transform .7s ease,
+    opacity .45s ease,
+    font-size .7s ease,
+    padding .7s ease;
+}
+
 /* Brand */
 .homebrand {
   position: fixed;
-  left: 1.25rem;
-  top: 3.5rem;
+  right: 3%;
+  top: 9%;
   text-decoration: none;
   display: flex;
   gap: .5rem;
   align-items: center;
   user-select: none;
   line-height: 1;
-  font-size: 24px;
-  z-index: 41;
+  font-size: 2rem;
+  z-index: 120;
 }
 
 .homebrand-symbol {
@@ -61,7 +85,7 @@ body {
 }
 
 .homebrand-text {
-  color: #FFFFFF;
+  color: #fff;
   background: var(--charcoal);
 }
 
@@ -70,7 +94,7 @@ body {
   position: fixed;
   left: 3rem;
   bottom: 2rem;
-  width: 6.5rem;
+  width: 42%;
   height: 1.8rem;
   transform: rotate(-90deg) translateZ(0);
   transform-origin: left bottom;
@@ -80,22 +104,20 @@ body {
   color: var(--gray-1);
   font-size: .7rem;
   cursor: pointer;
-  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0);
-  will-change: background;
-  image-rendering: auto;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.145);
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0;
-  z-index: 41;
-  ;
+  justify-content: flex-start;
+  padding: 10px;
+  z-index: 120;
 }
 
 .policy-btn:hover {
   background: linear-gradient(180deg, var(--btn-g3) 0%, var(--btn-g2) 50%, var(--btn-g1) 100%);
-  color: #4B4B4B;
+  color: #4b4b4b;
 }
 
+/* Overlay policy */
 .overlay {
   position: fixed;
   inset: 0;
@@ -109,14 +131,13 @@ body {
   opacity: 1;
 }
 
-/* Wrapper fisso centrato (come una card), nessun bordo */
 .notepad-wrap {
   position: fixed;
   top: 50%;
   left: 50%;
+  width: 550px;
   transform: translate(-50%, -50%) scale(.86);
   opacity: 0;
-  width: 550px;
   z-index: 1001;
   transition: transform .18s ease, opacity .18s ease;
 }
@@ -126,17 +147,15 @@ body {
   opacity: 1;
 }
 
-/* immagine notepad pulita, piccola e con ombra */
 .notepad-img {
   width: 550px;
   height: auto;
   max-height: 71vh;
   object-fit: contain;
-  z-index: 1;
   border: none;
+  z-index: 1;
 }
 
-/* testo sopra il notepad (rimane nei limiti visivi) */
 .notepad-text {
   position: fixed;
   left: 80px;
@@ -151,7 +170,6 @@ body {
   z-index: 2;
 }
 
-/* Bottone lingua sulla "finestra" */
 .notepad-lang {
   position: absolute;
   top: 70px;
@@ -161,8 +179,8 @@ body {
   height: 37px;
   color: #292929;
   border-radius: 5px;
-  background-color: transparent;
-  border: transparent;
+  background: transparent;
+  border: none;
   cursor: pointer;
   font-size: 18px;
   display: grid;
@@ -171,16 +189,14 @@ body {
 
 .notepad-lang:hover {
   background: #2e2e2e08;
-  color: #000000;
+  color: #000;
 }
 
 .close-notepad {
   position: absolute;
   top: calc(50% - 217px);
-  /* centrato rispetto al notepad */
   right: calc(50% - 214px);
   width: 43px;
-  /* mantieni la dimensione più grande come default */
   height: auto;
   border: none;
   background: transparent;
@@ -191,17 +207,15 @@ body {
   overflow: hidden;
 }
 
-/* layer invisibile che contiene l'immagine di chiusura */
 .close-notepad::after {
   content: "";
   position: absolute;
   inset: 0;
   background: url("notepad_close.png") no-repeat center center / contain;
   opacity: 0;
-  transition: opacity 0.10s ease-in-out;
+  transition: opacity .1s ease-in-out;
 }
 
-/* dissolvenza morbida solo sull'immagine */
 .close-notepad:hover::after {
   opacity: 1;
 }
@@ -209,36 +223,51 @@ body {
 .notepad-text::after {
   content: "|";
   display: inline-block;
-  color: #000000;
+  color: #000;
   animation: blink 1s steps(2, start) infinite;
 }
 
-/* cursore decorativo sparisce quando l’utente clicca per scrivere */
 .notepad-text:focus::after {
   display: none;
 }
 
-/* animazione */
 @keyframes blink {
   to {
     opacity: 0;
   }
 }
 
-/* Palco */
+/* Stage */
 .stage {
   position: relative;
   width: 100vw;
   height: 100vh;
   display: grid;
   place-items: center;
+  z-index: 10;
+}
+
+/* /Index */
+.txt-index {
+  position: absolute;
+  top: 10.5%;
+  left: 19.5%;
+  transform: translate(-50%, -50%);
+  display: block;
+  font-size: 2.2rem;
+  font-family: "Inter", sans-serif;
+  color: var(--gray-1);
+  letter-spacing: .02em;
+  z-index: 109;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 /* Personaggio */
 .personaggio {
   position: absolute;
-  top: 35%;
-  left: 50%;
+  top: 13%;
+  left: 13.5%;
   transform: translate(-50%, -50%);
   text-align: center;
   white-space: nowrap;
@@ -250,7 +279,7 @@ body {
 .personaggio .sparkles {
   pointer-events: none;
   display: block;
-  font-size: 1.1rem;
+  font-size: 3rem;
   transform: translateX(-20%);
   color: var(--ascii);
   margin-bottom: .15rem;
@@ -259,7 +288,7 @@ body {
 .personaggio .ascii-character {
   pointer-events: none;
   display: block;
-  font-size: 1.25rem;
+  font-size: 4rem;
   color: var(--ascii);
 }
 
@@ -271,14 +300,23 @@ body {
 .personaggio.selected .sparkles,
 .personaggio.selected .ascii-character {
   animation-play-state: paused !important;
-  /* mette in pausa le animazioni CSS */
 }
 
-/* Menu con posizionamento manuale */
+.personaggio.selected .ascii-character {
+  animation: none !important;
+}
+
+.personaggio.selected .ascii-character::before,
+.personaggio.selected .ascii-character::after {
+  content: none !important;
+  animation: none !important;
+}
+
+/* Menu home */
 .menu {
   position: absolute;
-  top: 46.5%;
-  left: 50%;
+  top: 26%;
+  left: 14.6%;
   transform: translate(-50%, -50%);
   width: 0;
   height: 0;
@@ -288,13 +326,54 @@ body {
   position: absolute;
   color: var(--gray-1);
   text-decoration: none;
-  font-size: .82rem;
-  transition: opacity .2s ease;
+  font-size: 0.95rem;
   white-space: nowrap;
+  padding: .2rem .15rem;
+  z-index: 1;
+  transition:
+    top .6s ease,
+    left .6s ease,
+    transform .6s ease,
+    color .25s ease,
+    opacity .4s ease;
+}
+
+.menu-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--charcoal);
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity 2s ease, transform 2s ease;
+  z-index: -1;
 }
 
 .menu-link:hover {
-  opacity: .65
+  color: #fff;
+  opacity: 1;
+  transition: color .50s ease;
+}
+
+.menu-link:hover::before {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity .50s ease, transform .50s ease;
+}
+
+.menu-link.active {
+  color: var(--text-rose);
+  text-decoration: none;
+  opacity: 1;
+}
+
+.menu-link.active:hover {
+  color: #fff;
+}
+
+.menu-link.active:hover::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .menu-artwork {
@@ -304,24 +383,28 @@ body {
 
 .menu-cv {
   left: -50px;
-  top: -10px;
+  top: -5px;
 }
 
 .menu-me {
   left: -10px;
-  top: -40px;
+  top: -35px;
 }
 
-.menu-html {
+.menu-img {
   left: 32px;
-  top: -70px;
+  top: -65px;
 }
 
-/* Righe info */
+.menu-exhibition {
+  display: none;
+}
+
+/* Bio */
 .bio-block {
   position: absolute;
-  top: 58%;
-  left: 50%;
+  top: 37%;
+  left: 26.4%;
   transform: translate(-50%, -50%);
   font-size: .72rem;
   line-height: 1.15;
@@ -338,8 +421,8 @@ body {
 
 .bio-block .r1 {
   color: var(--text-rose);
-  transform: translateX(7rem) translateY(0rem);
-  gap: 0.1rem;
+  transform: translateX(7rem) translateY(0);
+  gap: .1rem;
 }
 
 .bio-block .r2 {
@@ -369,11 +452,11 @@ body {
   color: var(--text-rose-2);
 }
 
-/* HACK block */
+/* Hack block */
 .hack-block {
   position: absolute;
-  top: 66%;
-  left: 50%;
+  top: 45%;
+  left: 26%;
   transform: translate(-50%, -50%);
   font-size: .72rem;
   line-height: 1.15;
@@ -399,24 +482,19 @@ body {
   transform: translateX(24.7rem) translateY(.15rem);
 }
 
-/* ===== Pannello laterale "Me ?" ===== */
+/* Me panel */
 .side-panel {
   position: fixed;
-  top: 7%;
-  right: 6rem;
-  width: 160px;
-  /* puoi stringere/allargare liberamente */
+  top: 39%;
+  left: 6.3%;
+  width: 200px;
   max-height: 78vh;
   overflow: auto;
   background: transparent;
-  /* <- niente box, niente card */
   border: none;
   padding: 0;
   z-index: 900;
-  /* sotto al notepad (1000) */
   color: #434343;
-
-  /* transizione romantica */
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
@@ -429,12 +507,11 @@ body {
   pointer-events: auto;
 }
 
-/* Linguetta ITA/ENG (sottile) */
 .lang-toggle {
   display: inline-flex;
   align-items: baseline;
   gap: 4px;
-  font-size: .72rem;
+  font-size: .9rem;
   color: var(--gray-1);
   margin-bottom: 8px;
   user-select: none;
@@ -462,54 +539,38 @@ body {
 }
 
 .panel-content {
-  font-size: .72rem;
-  color: #434343;
+  font-size: .8rem;
+  color: #636363;
   white-space: pre-wrap;
 }
 
-/* Stato attivo dei bottoni del menu */
-.menu-link.active {
-  color: var(--text-rose);
-  /* colore rosa brillante */
-  transition: color .25s ease;
-  /* dissolvenza morbida */
-  text-decoration: underline;
-  text-decoration-color: var(--text-rose);
-  text-underline-offset: 2px;
-  opacity: .65;
-}
-
-
-/* Nuvoletta ASCII */
+/* Bubble */
 .ascii-bubble[hidden] {
   display: none;
 }
 
 .ascii-bubble {
   position: absolute;
-  left: 40px;
-  top: -90px;
-  z-index: 10;
-  pointer-events: auto;
-  user-select: none;
+  left: 90%;
+  top: -10%;
   white-space: pre;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 13px;
   line-height: 1.1;
   color: #818181;
   opacity: 0;
-  z-index: 110;
   transform: translateY(2px);
+  z-index: 111;
+  pointer-events: auto;
+  user-select: none;
 }
 
-/* stato mostrato: fade-in + movimento nuvola continuo */
 .ascii-bubble.show {
   animation:
     asciiFade .28s ease-out forwards,
     cloudFloat 6s ease-in-out .28s infinite alternate;
 }
 
-/* transizioni */
 @keyframes asciiFade {
   to {
     opacity: 1;
@@ -517,10 +578,9 @@ body {
   }
 }
 
-/* “nuvoletta in movimento” (X/Y lievi; cambia ampiezza se vuoi più evidente) */
 @keyframes cloudFloat {
   0% {
-    transform: translate(0px, 0px);
+    transform: translate(0, 0);
   }
 
   50% {
@@ -528,16 +588,14 @@ body {
   }
 
   100% {
-    transform: translate(0px, 0px);
+    transform: translate(0, 0);
   }
 }
 
-/* icone cliccabili dentro la nuvoletta */
 .ascii-bubble .icon-ribbon,
 .ascii-bubble .icon-idea {
   cursor: pointer;
   transition: transform .15s ease, filter .15s ease;
-  z-index: 110;
 }
 
 .ascii-bubble .icon-ribbon:hover,
@@ -546,44 +604,19 @@ body {
   filter: drop-shadow(0 0 4px rgba(255, 86, 255, .6));
 }
 
-/* focus da tastiera (accessibilità) */
 .ascii-bubble .icon-ribbon:focus,
 .ascii-bubble .icon-idea:focus {
   outline: none;
   text-shadow: 0 0 6px rgba(255, 86, 255, .7);
 }
 
-.personaggio.selected .ascii-character {
-  animation: none !important;
-}
-
-.personaggio.selected .ascii-character::before,
-.personaggio.selected .ascii-character::after {
-  content: none !important;
-  animation: none !important;
-}
-
-/* (già consigliato) il container riceve i click */
-.personaggio {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.personaggio .sparkles,
-.personaggio .ascii-character {
-  pointer-events: none;
-}
-
-/* ===== BG Gallery (dietro la scena) ===== */
+/* Gallery */
 .bg-gallery {
   position: fixed;
   inset: 0;
   z-index: 0;
-  /* dietro alla scena */
   pointer-events: none;
-  /* niente click sullo sfondo */
   opacity: 0;
-  /* nascosta finché spenta */
   transition: opacity .25s ease;
 }
 
@@ -598,7 +631,6 @@ body {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  /* crossfade via .show */
   transition: opacity var(--fade, 450ms) ease;
   filter: saturate(1.02) contrast(1.02);
 }
@@ -607,28 +639,16 @@ body {
   opacity: 1;
 }
 
-/* === ZONE GALLERY: sinistra/destra, con buco centrale “safe” === */
-/* larghezza della zona centrale sicura (niente overlay/cursori) */
-:root {
-  --safeW: 520px;
-}
-
-/* puoi cambiare, o verrà impostato via JS all’apertura */
-
 .gallery-zone {
   position: fixed;
   top: 0;
   height: 100vh;
   z-index: 90;
-  /* sotto homebrand/policy (120) e personaggio (110) */
   background: transparent;
   pointer-events: none;
-  /* spente di default */
   cursor: auto;
-  /* cursore normale finché la gallery è chiusa */
 }
 
-/* le zone coprono metà schermo meno metà safeW (buco centrale) */
 .gallery-zone.zone-left {
   left: 0;
   width: calc((100vw - var(--safeW)) / 2);
@@ -639,21 +659,18 @@ body {
   width: calc((100vw - var(--safeW)) / 2);
 }
 
-/* attive solo quando la gallery è aperta */
 body.gallery-active .gallery-zone {
   pointer-events: auto;
   cursor: none;
-  /* nasconde il cursore standard nelle zone */
 }
 
-/* cursore testuale che segue il mouse */
 .gallery-zone::after {
   content: attr(data-cursor);
   position: fixed;
   left: var(--cursor-x, -9999px);
   top: var(--cursor-y, -9999px);
-  font: 14px/1 'Inter', sans-serif;
-  color: #FF56FF;
+  font: 14px/1 "Inter", sans-serif;
+  color: var(--text-rose);
   pointer-events: none;
   transform: translate(-50%, -50%);
   opacity: 0;
@@ -661,51 +678,25 @@ body.gallery-active .gallery-zone {
   z-index: 9999;
 }
 
-/* visibile solo quando la gallery è attiva e la zona ha l’etichetta */
 body.gallery-active .gallery-zone[data-cursor]::after {
   opacity: 1;
 }
 
-/* assicurati che questi restino cliccabili sempre */
-.homebrand,
-.policy-btn {
-  position: fixed;
-  z-index: 120 !important;
-  pointer-events: auto;
-}
-
-/* personaggio sopra alle zone (ma al centro le zone non esistono) */
-.personaggio {
-  z-index: 110;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.ascii-bubble {
-  z-index: 111;
-}
-
-/* Didascalia ruotata vicino ad "All Policy" */
 .img-caption {
   position: fixed;
-  right: 0%;
-  bottom: 0rem;
+  right: 0;
+  bottom: 0;
   height: 1.8rem;
   transform-origin: right bottom;
   z-index: 40;
-  border-radius: 0.6rem 0rem 0rem 0rem;
-  border: 1px solid #FF56FF;
-  background: linear-gradient(180deg, #fec9fe 0%, #fb74fb 50%, #FEAEFE 100%);
-  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0);
-  color: #ffffff;
+  border-radius: .6rem 0 0 0;
+  border: 1px solid var(--text-rose);
+  background: linear-gradient(180deg, #fec9fe 0%, #fb74fb 50%, #feaefe 100%);
+  color: #fff;
   font-size: .8rem;
-
   display: inline-block;
-  /* <-- fa adattare il background al testo */
   padding: 3px 10px;
-  /* <-- 5px sopra/sotto, 14px ai lati = più spazio */
   min-width: fit-content;
-
   opacity: 0;
   transition: opacity .25s ease;
   user-select: none;
@@ -716,171 +707,111 @@ body.gallery-active .gallery-zone[data-cursor]::after {
   opacity: 1;
 }
 
-/* Assicuriamoci che la scena resti sopra allo sfondo */
-.stage {
-  position: relative;
-  z-index: 10;
-}
-
-/* Se il personaggio non riceve click, riabilitiamoli */
-.personaggio {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.personaggio .sparkles,
-.personaggio .ascii-character {
+/* Viewer / cv info */
+.work-viewer,
+.cv-info {
+  opacity: 0;
   pointer-events: none;
 }
 
-/* ===== Modalità Portfolio (My ArtWork / HTML) ===== - Sposta i due bottoni a sinistra, impilati - Nasconde CV e Me? - Compatta bio, hack e personaggio in alto vicino al brand - Transizioni morbide ==================================================== */
-body.mode-portfolio .menu {
+.work-viewer {
   position: fixed;
-  left: 2.2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: auto;
-  height: auto;
-  z-index: 105;
+  top: .4rem;
+  left: 21.5%;
+  width: 60%;
+  height: calc(100vh - .8rem);
+  background: rgba(0, 0, 0, 0.035);
+  z-index: 70;
+  overflow: hidden;
 }
 
-body.mode-portfolio .menu-link {
-  position: static;
-  display: block;
-  margin: 0 0 .6rem 0;
-  font-size: .95rem;
-  color: var(--charcoal);
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity .25s ease, transform .25s ease, color .25s ease;
+.work-viewer__page {
+  width: 100%;
+  height: 100%;
 }
 
-body.mode-portfolio .menu-artwork,
-body.mode-portfolio .menu-html {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* bottone attivo: evidenziato (semplice e pulito) */
-body.mode-portfolio .menu-artwork.active,
-body.mode-portfolio .menu-html.active {
-  color: #FF56FF;
-}
-
-/* Nascondi gli altri due pulsanti */
-body.mode-portfolio .menu-cv,
-body.mode-portfolio .menu-me {
-  display: none !important;
-}
-
-body.mode-portfolio .bio-block {
+.cv-info {
   position: fixed;
-  top: 3.6rem;
-  left: 8rem;
-  transform: none;
-  width: auto;
-  font-size: .72rem;
-  z-index: 104;
+  top: 30rem;
+  left: 5rem;
+  width: 20rem;
+  font-size: .8rem;
+  line-height: 1.25;
+  color: var(--gray-1);
+  white-space: pre-line;
+  z-index: 121;
+  transform: translateY(10px);
 }
 
-body.mode-portfolio .hack-block {
-  position: fixed;
-  top: 9.1rem;
-  left: 36rem;
-  transform: none;
-  z-index: 104;
-}
-
-body.mode-portfolio .personaggio {
-  position: fixed;
-  top: 9rem;
-  left: calc(36rem + 430px);
-  transform: none;
-  z-index: 106;
-}
-
-body.mode-portfolio .stage {
-  transition: opacity .25s ease;
-}
-
-.personaggio,
-.bio-block,
-.hack-block {
-  transition: opacity .28s ease;
-}
-
-/* ===== Artwork Grid (sezione centrale) ===== */
+/* Artwork grid base */
 .artwork-grid {
   position: fixed;
-  left: 70rem;
-  top: 15rem;
-  /* sotto al brand/bio */
+  left: 85rem;
+  top: 13rem;
   transform: translateX(-50%);
-  width: min(100vw - 8rem, 1280px);
+  width: min(100vw - 40rem, 1280px);
   height: calc(100vh - 14rem);
-  padding: 1rem 0.5rem 2rem;
+  padding: 1rem .5rem 2rem;
   overflow: auto;
   z-index: 80;
-  /* sotto al menu (999) e personaggio (106) */
+  opacity: 1;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 84%, transparent 100%);
 }
 
-/* 3 colonne fluide con gap equilibrato */
+.artwork-grid::-webkit-scrollbar {
+  display: none;
+}
+
 .artwork-grid__inner {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: start;
-  gap: 4rem 4rem;
-  /* righe / colonne */
+  gap: 2rem 1rem;
 }
 
 .art-card {
   display: grid;
-  grid-template-columns: 5rem 1fr;
+  grid-template-columns: 3rem 1fr;
   grid-auto-rows: auto;
   row-gap: .85rem;
-  column-gap: 0.1rem;
-  font-size: .75rem;
+  column-gap: .1rem;
+  font-size: .7rem;
   line-height: 1.25;
   color: var(--charcoal);
 }
 
-/* “with HACK” opzionale */
 .art-card__hack {
   grid-column: 1 / -1;
-  color: #B0B0B0;
-  margin-bottom: 0rem;
-  transform: translateY(1.8rem);
+  color: #b0b0b0;
+  margin-bottom: 0;
+  transform: translateY(2rem);
 }
 
 .art-card__hack em {
   font-style: italic;
 }
 
-.art-card__hack .hack-name {
-  font-style: normal;
-}
-
 .art-card__hack--copyright {
-  color: #7a7a7a00;
-  /* puoi scegliere una tinta più o meno scura */
+  color: transparent;
   font-style: normal;
-  /* niente corsivo */
 }
 
-/* Titolo: prima riga, tutta larghezza */
 .art-card__title {
   grid-column: 1 / -1;
   font-weight: 400;
-  transform: translateY(0.8rem);
+  transform: translateY(.8rem);
   color: #2a2a2a;
-  margin-top: 0.3rem;
+  margin-top: .3rem;
 }
 
-/* Righe 2-3: incolonnate */
 .art-card__year,
 .art-card__aggiunta {
   grid-column: 1;
   white-space: nowrap;
+  color: #2a2a2a83;
 }
 
 .art-card__descrizione,
@@ -889,64 +820,469 @@ body.mode-portfolio .stage {
   max-width: 12rem;
 }
 
-/* Solo quando sei in modalità portfolio mostriamo la griglia */
-body:not(.mode-portfolio) .artwork-grid {
+.art-card.is-link,
+.art-card[data-href] {
+  cursor: pointer;
+}
+
+.art-card:hover .art-card__title {
+  color: #000;
+  text-decoration: none;
+}
+
+/* Voci dinamiche menu mywork */
+.menu-allwork,
+.menu-html-work,
+.menu-animation,
+.menu-graphics,
+.menu-vr {
   display: none;
 }
 
-/* ===== Scrollbar invisibile ===== */
-.artwork-grid {
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* IE/Edge */
+/* ===========================
+   MYWORK MODE
+   =========================== */
+
+
+body.mode-mywork .bio-block,
+body.mode-mywork .hack-block,
+body.mode-mywork #mePanel {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.artwork-grid::-webkit-scrollbar {
-  /* Chrome, Safari */
-  display: none;
+body.mode-mywork .txt-index {
+  top: 9%;
+  left: 2.1%;
+  transform: translate(0, 0);
+  font-size: 8rem;
+  line-height: .9;
+  letter-spacing: -.04em;
 }
 
-/* ===== Effetto dissolvenza agli estremi ===== */
+body.mode-mywork .personaggio {
+  top: -3%;
+  left: 5%;
+  transform: translate(0, 0) scale(.38);
+}
 
-/* Contenitore: serve per gestire il fade sopra e sotto */
-.artwork-grid {
+body.mode-mywork .homebrand {
+  top: 5rem;
+  right: 26rem;
+}
+
+body.mode-mywork .policy-btn {
+  width: 5.3rem;
+  left: 3rem;
+  bottom: 1.4rem;
+  font-size: .72rem;
+  padding: .35rem 1rem;
+}
+
+/* menu mywork posizionabile da css */
+body.mode-mywork .menu {
   position: fixed;
-  overflow-y: auto;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 97%, transparent 100%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  pointer-events: none;
+  z-index: 120;
 }
 
-/* ===== Bottone Exhibition ===== */
-/* Di base nascosto */
-.menu-exhibition {
+body.mode-mywork .menu-link {
+  position: absolute;
+  pointer-events: auto;
+  font-size: .85rem;
+  color: var(--charcoal);
+  background: none;
+  text-decoration: none !important;
+  white-space: nowrap;
+  padding: .2rem .15rem;
+  z-index: 1;
+  transition:
+    top .6s ease,
+    left .6s ease,
+    transform .6s ease,
+    color .25s ease,
+    opacity .4s ease;
+
+}
+
+body.mode-mywork .menu-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--charcoal);
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity 2s ease, transform 2s ease;
+  z-index: -1;
+
+}
+
+body.mode-mywork .menu-link::after {
+  content: none !important;
+  display: none !important;
+}
+
+body.mode-mywork .menu-link:hover {
+  color: #ffffff;
+  text-decoration: none !important;
+  background: var(--charcoal);
+  transition: color .50s ease;
+  box-shadow: none !important;
+}
+
+body.mode-mywork .menu-link:hover::before {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity .50s ease, transform .50s ease;
+}
+
+body.mode-mywork .menu-link.active {
+  color: var(--text-rose);
+  text-decoration: none;
+  background: none;
+  opacity: 1;
+}
+
+body.mode-mywork .menu-link.active:hover {
+  color: #fff;
+  text-decoration: none !important;
+  background: none;
+  box-shadow: none !important;
+}
+
+body.mode-mywork .menu-link.active:hover::before {
+  opacity: 1;
+  transform: scale(1);
+  background: var(--text-rose);
+}
+
+
+/* home-only buttons hidden in mywork */
+body.mode-mywork .menu-cv,
+body.mode-mywork .menu-me,
+body.mode-mywork .menu-img,
+body.mode-mywork .menu-exhibition {
+  display: none !important;
+}
+
+/* mywork-only buttons shown */
+body.mode-mywork .menu-allwork,
+body.mode-mywork .menu-html-work,
+body.mode-mywork .menu-animation,
+body.mode-mywork .menu-graphics,
+body.mode-mywork .menu-vr {
+  display: block;
+  font-size: 0.90rem;
+}
+
+/* posizioni modificabili */
+body.mode-mywork .menu-artwork {
+  top: 25%;
+  left: 3%;
+  font-size: 1.2rem;
+}
+
+body.mode-mywork .menu-artwork:hover {
+  text-decoration: none !important;
+  background: none;
+  color: var(--btn-g2);
+}
+
+body.mode-mywork .menu-artwork::before {
+  text-decoration: none !important;
+  background: none;
+  color: var(--btn-g2);
+}
+
+body.mode-mywork .menu-allwork {
+  top: 28%;
+  left: 2.2%;
+}
+
+body.mode-mywork .menu-html-work {
+  top: 31%;
+  left: 6%;
+}
+
+body.mode-mywork .menu-animation {
+  top: 34%;
+  left: 8%;
+}
+
+body.mode-mywork .menu-graphics {
+  top: 37%;
+  left: 11.8%;
+}
+
+body.mode-mywork .menu-vr {
+  top: 40%;
+  left: 16.1%;
+}
+
+body.mode-mywork .cv-info {
+  opacity: 1;
+  pointer-events: none;
+  transform: translateY(0);
+}
+
+body.mode-mywork .work-viewer {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.art-group-label {
+  width: 100%;
+  text-align: right;
+  color: #b0b0b0;
+  font-size: .72rem;
+  line-height: 1;
+  text-transform: lowercase;
+  margin: 1.8rem 0 .4rem 0;
+  padding-right: 0;
+  font-family: "Inter", sans-serif;
+}
+
+body.mode-mywork .art-group-label {
+  width: 100%;
+  text-align: right;
+  color: #b0b0b0;
+  font-size: .72rem;
+  line-height: 1;
+  text-transform: lowercase;
+  margin: 2.2rem 0 .5rem 0;
+  font-family: "Inter", sans-serif;
+}
+
+body.mode-mywork .artwork-grid {
+  top: 2rem;
+  right: 2rem;
+  left: auto;
+  transform: none;
+  width: 18rem;
+  height: calc(100vh - 4rem);
+  padding: 0 0 10rem 0;
+  opacity: 1;
+}
+
+body.mode-mywork .artwork-grid__inner {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+body.mode-mywork .art-card {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  grid-auto-rows: auto;
+  row-gap: .85rem;
+  column-gap: .1rem;
+  font-size: .8rem;
+  font-family: "Inter", sans-serif;
+  line-height: 1.25;
+  color: var(--charcoal);
+}
+
+body.mode-mywork .art-card__hack {
+  color: #b6b6b6;
+  margin-bottom: 0;
+  transform: translateY(1.6rem);
+}
+
+body.mode-mywork .art-card__title {
+  grid-column: 1 / -1;
+  font-weight: 400;
+  transform: translateY(.8rem);
+  color: #2a2a2a;
+  margin-top: .3rem;
+}
+
+body.mode-mywork .art-card__year,
+body.mode-mywork .art-card__aggiunta {
+  grid-column: 1;
+  white-space: nowrap;
+  color: #2a2a2a;
+  font-weight: 400;
+}
+
+body.mode-mywork .art-card__descrizione,
+body.mode-mywork .art-card__esposizione {
+  grid-column: 2;
+  max-width: 15rem;
+}
+
+/* utility */
+.bio-name {
+  cursor: pointer;
+}
+
+
+.cv-info {
+  position: fixed;
+  top: 27rem;
+  left: 5.5rem;
+  width: 17rem;
+  height: calc(100vh - 23rem);
+  font-size: .8rem;
+  line-height: 1.35;
+  color: #434343;
+  z-index: 121;
+  transform: translateY(10px);
+  opacity: 0;
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column;
+}
+
+body.mode-mywork .cv-info {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.cv-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cv-scroll::-webkit-scrollbar {
   display: none;
 }
 
-/* In modalità portfolio, mostralo SOLO quando sei in Artwork */
-body.mode-portfolio.show-exhibition .menu-exhibition {
+.cv-panel-content {
+  margin: 0;
+  padding: 0 0 2rem 0;
+  color: #434343;
+}
+
+.cv-panel-content[hidden] {
+  display: none !important;
+}
+
+.cv-section-title {
+  margin: 0 0 .9rem 0;
+  color: #434343;
+  letter-spacing: .06em;
+}
+
+.cv-section-title:first-child {
+  margin-top: 0;
+}
+
+.cv-subtitle {
+  margin: .8rem 0 .35rem 0;
+  color: #434343;
+}
+
+.cv-line,
+.cv-line--link {
   display: block;
+  margin: 0 0 .32rem 0;
+  color: #434343;
+  text-decoration: none;
+}
+
+.cv-line--link,
+.cv-line--link .cv-body,
+.cv-line--link .cv-emph,
+.cv-line--link .cv-addition {
+  transition: color 2s ease, opacity .22s ease;
+}
+
+.cv-line--link:hover,
+.cv-line--link:hover .cv-body,
+.cv-line--link:hover .cv-emph,
+.cv-line--link:hover .cv-addition {
+  color: #ff8dff;
   opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
-  /* armonizza con gli altri link del menu */
-  font-size: .95rem;
-  color: var(--charcoal);
-  transition: opacity .25s ease, transform .25s ease, color .25s ease;
-  margin-top: .2rem;
+  transition: color .54s ease;
 }
 
-/* stato attivo (rosa) come gli altri */
-.menu-exhibition.active {
-  color: #FF56FF;
+.cv-date {
+  color: #9F9F9F;
 }
 
-/* Fade del contenuto centrale */
-.artwork-grid {
-  transition: opacity .22s ease;
+.cv-addition {
+  color: #9F9F9F;
+  font-style: italic;
 }
 
-/* Exhibition evidenziato quando attivo */
-body.mode-portfolio.show-exhibition .menu-exhibition.active {
-  color: #FF56FF;
+.cv-emph {
+  font-style: italic;
+}
+
+.cv-separator {
+  margin: .5rem 0;
+  color: #9F9F9F;
+}
+
+.cv-line--space {
+  height: .55rem;
+}
+
+.cv-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cv-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✨ SFUMATURA TOP + BOTTOM */
+.cv-scroll {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 60%,
+    black 60%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 6%,
+    black 84%,
+    transparent 90%
+  );
+}
+
+.desk-model-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.desk-model-viewer {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --progress-bar-color: transparent;
+  --progress-bar-height: 0px;
+  --poster-color: transparent;
+}
+
+.desk-model-viewer::part(default-progress-bar) {
+  display: none;
+}
+
+.desk-model-viewer::part(default-ar-button) {
+  display: none;
+}
+
+.desk-model-viewer::part(default-poster) {
+  background: transparent;
 }

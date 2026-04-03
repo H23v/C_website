@@ -341,28 +341,45 @@ const personaggio = document.querySelector('.personaggio');
 const asciiBubble = document.getElementById('asciiBubble');
 const asciiCharEl = document.querySelector('.ascii-character');
 
-const SELECTED_FACE = 'ദ്ദ☕️（≖⩊≖マ';
+const SELECTED_FACE = 'ദ്ദ☕︎（≖⩊≖マ';
 let isSelected = false;
 let originalAscii = asciiCharEl ? asciiCharEl.textContent : '';
 
+function resetPersonaggioState() {
+  if (!personaggio || !asciiBubble || !asciiCharEl) return;
+
+  asciiBubble.classList.remove('show');
+  asciiBubble.setAttribute('hidden', '');
+
+  personaggio.classList.remove('selected');
+  asciiCharEl.textContent = originalAscii;
+
+  isSelected = false;
+}
+
+window.resetPersonaggioState = resetPersonaggioState;
+
 if (personaggio && asciiBubble && asciiCharEl) {
   personaggio.addEventListener('click', (e) => {
-    // non togglare se clicco sulle icone dentro la nuvoletta
+
+    // 👇 BLOCCA TUTTO se sei in mywork
+    if (document.body.classList.contains('mode-mywork')) return;
+
+    // non togglare se clicco sulle icone
     if (e.target.closest('.icon-ribbon, .icon-idea')) return;
 
     if (!isSelected) {
-      // APRI: mostra bubble + blocca animazioni + sostituisci COMPLETAMENTE il volto
       if (!originalAscii) originalAscii = asciiCharEl.textContent || '';
+
       asciiBubble.removeAttribute('hidden');
-      void asciiBubble.offsetWidth;          // reflow per animazione
+      void asciiBubble.offsetWidth;
       asciiBubble.classList.add('show');
 
-      personaggio.classList.add('selected'); // <- spegne ::before/::after via CSS
+      personaggio.classList.add('selected');
       asciiCharEl.textContent = SELECTED_FACE;
 
       isSelected = true;
     } else {
-      // CHIUDI: nascondi bubble + riattiva animazioni + ripristina volto originale
       asciiBubble.classList.remove('show');
       setTimeout(() => asciiBubble.setAttribute('hidden', ''), 120);
 
@@ -373,17 +390,17 @@ if (personaggio && asciiBubble && asciiCharEl) {
     }
   });
 
-  // hook pronti per le icone (li agganceremo dopo)
-  const ribbonBtn = asciiBubble.querySelector('.icon-ribbon');
-  const ideaBtn = asciiBubble.querySelector('.icon-idea');
-  ribbonBtn?.addEventListener('click', (ev) => { ev.stopPropagation(); /* TODO: azione 🎀 */ });
-  ideaBtn?.addEventListener('click', (ev) => { ev.stopPropagation(); /* TODO: azione 💡 */ });
+// hook pronti per le icone (li agganceremo dopo)
+const ribbonBtn = asciiBubble.querySelector('.icon-ribbon');
+const ideaBtn = asciiBubble.querySelector('.icon-idea');
+ribbonBtn?.addEventListener('click', (ev) => { ev.stopPropagation(); /* TODO: azione 🎀 */ });
+ideaBtn?.addEventListener('click', (ev) => { ev.stopPropagation(); /* TODO: azione 💡 */ });
 }
 
 /* ===== Galleria di sfondo controllata dal tasto 🎀 (con zona centrale “safe”) ===== */
 (function () {
-  const ribbonBtn    = document.querySelector('.icon-ribbon');
-  const personaggio  = document.querySelector('.personaggio');
+  const ribbonBtn = document.querySelector('.icon-ribbon');
+  const personaggio = document.querySelector('.personaggio');
   if (!ribbonBtn) return;
 
   // Dati immagini
@@ -426,7 +443,7 @@ if (personaggio && asciiBubble && asciiCharEl) {
     return d;
   });
 
-  const zoneLeft  = ensureEl('.gallery-zone.zone-left',  () => {
+  const zoneLeft = ensureEl('.gallery-zone.zone-left', () => {
     const d = document.createElement('div');
     d.className = 'gallery-zone zone-left';
     d.setAttribute('aria-label', 'Previous');
@@ -451,7 +468,7 @@ if (personaggio && asciiBubble && asciiCharEl) {
     try {
       const r = personaggio?.getBoundingClientRect();
       if (r && r.width) w = Math.max(420, Math.min(window.innerWidth * 0.8, r.width + extra));
-    } catch {}
+    } catch { }
     document.documentElement.style.setProperty('--safeW', w + 'px');
   }
 
@@ -470,7 +487,7 @@ if (personaggio && asciiBubble && asciiCharEl) {
     index = (idx + images.length) % images.length;
     const { src, caption } = images[index];
 
-    const inLayer  = showingA ? layerA : layerB;
+    const inLayer = showingA ? layerA : layerB;
     const outLayer = showingA ? layerB : layerA;
 
     outLayer.classList.remove('show');
@@ -520,20 +537,20 @@ if (personaggio && asciiBubble && asciiCharEl) {
     zone.style.setProperty('--cursor-y', e.clientY + 'px');
     zone.setAttribute('data-cursor', label);
   }
-  zoneLeft.addEventListener('mousemove',  (e) => updateCursor(e, zoneLeft,  '↰UNDO'));
+  zoneLeft.addEventListener('mousemove', (e) => updateCursor(e, zoneLeft, '↰UNDO'));
   zoneRight.addEventListener('mousemove', (e) => updateCursor(e, zoneRight, 'REDO↳'));
-  zoneLeft.addEventListener('mouseleave',  () => zoneLeft.removeAttribute('data-cursor'));
+  zoneLeft.addEventListener('mouseleave', () => zoneLeft.removeAttribute('data-cursor'));
   zoneRight.addEventListener('mouseleave', () => zoneRight.removeAttribute('data-cursor'));
 
-  zoneLeft.addEventListener('click',  () => { if (open) prev(); });
+  zoneLeft.addEventListener('click', () => { if (open) prev(); });
   zoneRight.addEventListener('click', () => { if (open) next(); });
 
   // Tastiera
   document.addEventListener('keydown', (e) => {
     if (!open) return;
     if (e.key === 'ArrowRight') next();
-    if (e.key === 'ArrowLeft')  prev();
-    if (e.key === 'Escape')     closeGallery();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'Escape') closeGallery();
   });
 
   // aggiorna la zona centrale quando ridimensioni

@@ -4,17 +4,17 @@
   color: var(--ascii);
 }
 @keyframes asciiCycle{
-  0%   { content: "ദ്ദ☕️（• ˕ •マ"; }
-  10%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  20%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  30%  { content: "ദ്ദ☕️（- ˕ -マ"; }
-  40%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  50%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  60%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  70%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  80%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  90%  { content: "ദ്ദ☕️（• ˕ •マ"; }
-  100% { content: "ദ്ദ☕️（• ˕ •マ"; }
+  0%   { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  10%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  20%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  30%  { content: "ദ്ദ☕︎（- ˕ -マ"; }
+  40%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  50%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  60%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  70%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  80%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  90%  { content: "ദ്ദ☕︎（• ˕ •マ"; }
+  100% { content: "ദ്ദ☕︎（• ˕ •マ"; }
 }
 .menu-link{ position:relative; }
 .menu-link::after{

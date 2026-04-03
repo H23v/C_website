@@ -13,13 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const asciiBubble = document.getElementById('asciiBubble');
   const asciiCharEl = document.querySelector('.ascii-character');
 
-  const SELECTED_FACE = 'ദ്ദ☕️（≖⩊≖マ';
+  const SELECTED_FACE = 'ദ്ദ☕︎（≖⩊≖マ';
   let isSelected = false;
   let originalAscii = asciiCharEl ? asciiCharEl.textContent : '';
 
   if (personaggio && asciiBubble && asciiCharEl) {
     personaggio.addEventListener('click', (e) => {
-      // non togglare se ho cliccato sulle icone nella nuvoletta
+      if (document.body.classList.contains('mode-mywork')) return;
+      
       if (e.target.closest('.icon-ribbon, .icon-idea')) return;
 
       if (!isSelected) {
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnArtwork = document.querySelector('.menu-artwork');
   const btnCV = document.querySelector('.menu-cv');
   const btnMe = document.querySelector('.menu-me');
-  const btnHTML = document.querySelector('.menu-html');
+  const btnHTML = document.querySelector('.menu-img');
 
   function setActive(btn) {
     document.querySelectorAll('.menu-link').forEach(b => b.classList.remove('active'));

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>©_ WebSite</title>
+  <title>©hiara_Bertasini</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
@@ -38,6 +38,8 @@
   <!-- Bottone Policy -->
   <button class="policy-btn">All Policy</button>
 
+  <span class="txt-index">/Index</span>
+
   <!-- Scena centrale -->
   <main class="stage">
     <div class="personaggio">
@@ -57,12 +59,20 @@
     </div>
 
     <div id="artworkGrid" class="artwork-grid" hidden></div>
+    <section id="workViewer" class="work-viewer" hidden>
+      <div class="work-viewer__page"></div>
+    </section>
 
+    <div id="cvInfo" class="cv-info" hidden>
+      <div class="cv-scroll">
+        <div class="cv-panel-content"></div>
+      </div>
+    </div>
     <nav class="menu">
-      <a href="#" class="menu-link menu-artwork">My ArtWork</a>
+      <a href="#" class="menu-link menu-artwork">Every Work</a>
       <a href="#" class="menu-link menu-cv">CV</a>
       <a href="#" class="menu-link menu-me">Me ?</a>
-      <a href="#" class="menu-link menu-html">HTML</a>
+      <a href="#" class="menu-link menu-img">IMG</a>
       <a href="#" class="menu-link menu-exhibition">Exhibition</a>
     </nav>
 
@@ -119,6 +129,7 @@
 
   <!-- Script: i dati della gallery DEVONO venire prima di script.js -->
   <script src="myartwork-txt.js"></script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <script src="myartwork.js"></script>
   <script src="immagini-selezionate.js"></script>
   <script src="texts.js"></script>
