@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moving ASCII Clouds & More</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: white;
+      font-family: 'Trebuchet MS', sans-serif;
+      overflow: hidden;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      pointer-events: none;
+    }
+
+    .title {
+      font-size: 32px;
+      color: #444;
+      text-align: center;
+      transition: color 0.3s;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+      text-align: center;
+      transition: color 0.3s;
+    }
+
+    /* ------------------------------
+       CLOUD & LIGHTNING
+    ------------------------------ */
+    .cloud-container {
+      position: absolute;
+      white-space: pre;
+      animation: moveClouds linear forwards;
+      pointer-events: none;
+    }
+
+    .cloud-text {
+      font-size: 16px;
+      color: #888;
+      display: inline-block;
+      transition: color 0.3s;
+    }
+
+    .bold-cloud {
+      font-weight: bold; /* per il grassetto */
+    }
+
+    /* Fulmine con (eventuale) lampeggio casuale */
+    .lightning {
+      font-size: 24px;
+      color: gold;
+      display: inline-block;
+      position: absolute;
+      pointer-events: none; /* di default non cliccabile */
+      opacity: 1;
+    }
+
+    @keyframes lightningBlink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Nuvole si spostano da destra a sinistra */
+    @keyframes moveClouds {
+      from {
+        transform: translateX(110vw);
+      }
+      to {
+        transform: translateX(-110vw);
+      }
+    }
+
+    /* ------------------------------
+       EXTRA SYMBOLS
+    ------------------------------ */
+    .symbol {
+      position: absolute;
+      white-space: pre;
+      pointer-events: none;
+      color: #000; /* default */
+      transition: color 0.3s;
+    }
+
+    @keyframes moveRightToLeft {
+      from {
+        transform: translateX(110vw);
+      }
+      to {
+        transform: translateX(-110vw);
+      }
+    }
+
+    @keyframes moveLeftToRight {
+      from {
+        transform: translateX(-110vw);
+      }
+      to {
+        transform: translateX(110vw);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">.‧｡Welcome to Cloudy Land°.‧</div>
+    <div class="subtitle">Enjoy the ASCII clouds floating</div>
+  </div>
+
+  <script>
+    /*******************************************
+     * ORARIO EUROPA CENTRALE (CET/CEST semplificato)
+     * Verifica se sono le ore 19 in CET (UTC+1).
+     *******************************************/
+    function is19CET() {
+      const now = new Date();
+      // ottieni ore UTC
+      const utcHour = now.getUTCHours();
+      // aggiungi 1 per CET semplificato (non stiamo gestendo l'ora legale)
+      const cetHour = (utcHour + 1) % 24;
+      return cetHour === 19;
+    }
+
+    function updateThemeByTime() {
+      if (is19CET()) {
+        // Sfondo #888, testi bianchi
+        document.body.style.backgroundColor = "#888";
+        document.body.style.color = "#fff";
+
+        // Cambiamo anche le scritte nel container
+        const titles = document.querySelectorAll(".title, .subtitle");
+        titles.forEach(el => {
+          el.style.color = "#fff";
+        });
+        // Cambiamo colore alle nuvole e simboli
+        const cloudTexts = document.querySelectorAll(".cloud-text");
+        cloudTexts.forEach(ct => {
+          ct.style.color = "#fff";
+        });
+        const symbols = document.querySelectorAll(".symbol");
+        symbols.forEach(s => {
+          s.style.color = "#fff";
+        });
+
+      } else {
+        // Condizione di default
+        document.body.style.backgroundColor = "white";
+        document.body.style.color = "#000";
+
+        const titles = document.querySelectorAll(".title, .subtitle");
+        titles.forEach(el => {
+          el.style.color = "";
+        });
+        const cloudTexts = document.querySelectorAll(".cloud-text");
+        cloudTexts.forEach(ct => {
+          ct.style.color = "#888";
+        });
+        const symbols = document.querySelectorAll(".symbol");
+        symbols.forEach(s => {
+          s.style.color = "#000";
+        });
+      }
+    }
+
+    // Verifica tema ogni 30 secondi (o ogni minuto) e all'avvio
+    setInterval(updateThemeByTime, 30000);
+    document.addEventListener("DOMContentLoaded", updateThemeByTime);
+
+
+    /*******************************************
+     * CODICE PRINCIPALE
+     *******************************************/
+    document.addEventListener("DOMContentLoaded", () => {
+      const cloudTemplates = [
+        `╭◜◝  ͡  ◜  ͡  ╮         ╭◜◝  ͡  ◜◝  ͡  ◝╮
+(                       )  ㅤ (    ㅤㅤㅤㅤ       )
+╰◟◞  ͜  ╭◜◝  ͡ ◜◝  ͡  ◝  ͡  ╮◞◟◞ ╯
+ㅤㅤ ㅤ (           ㅤ             )
+　　    ╰◟◞  ͜  ◟◞  ͜  ◟◞ ╯`,
+        `╭◜◝  ͡  ◜    ͡  ╮      
+(    ㅤㅤㅤㅤ        )
+╰ ◟    ◞  ͜  ╮◞◟`
+      ];
+
+      // Gestione posizioni (per evitare sovrapposizioni):
+      const symbolPositions = {
+        bird: [],
+        rare: [],
+        plane: []
+      };
+
+      function getSafeTopPosition(symbolType, minDistancePercent = 5, rangeMin = 10, rangeMax = 90) {
+        for (let attempt = 0; attempt < 10; attempt++) {
+          const candidate = Math.random() * (rangeMax - rangeMin) + rangeMin;
+          let tooClose = false;
+
+          for (const otherType in symbolPositions) {
+            for (const pos of symbolPositions[otherType]) {
+              if (Math.abs(pos - candidate) < minDistancePercent) {
+                tooClose = true;
+                break;
+              }
+            }
+            if (tooClose) break;
+          }
+          if (!tooClose) {
+            symbolPositions[symbolType].push(candidate);
+            return candidate;
+          }
+        }
+        // fallback
+        const fallback = Math.random() * (rangeMax - rangeMin) + rangeMin;
+        symbolPositions[symbolType].push(fallback);
+        return fallback;
+      }
+
+      function freeTopPosition(symbolType, topPercent) {
+        const arr = symbolPositions[symbolType];
+        const idx = arr.indexOf(topPercent);
+        if (idx !== -1) arr.splice(idx, 1);
+      }
+
+      /*******************************************************
+       * EFFETTO STROBO AL CLICK DEL FULMINE
+       *******************************************************/
+      let strobeTriggered = false; // se l'effetto strobo è stato già attivato
+      function strobeEffect(times, interval) {
+        if (strobeTriggered) return; // evita di ripetere
+        strobeTriggered = true;
+
+        let count = 0;
+        const flicker = setInterval(() => {
+          document.body.style.backgroundColor =
+            document.body.style.backgroundColor === "black" ? "white" : "black";
+          count++;
+          if (count === times * 2) {
+            clearInterval(flicker);
+            document.body.style.backgroundColor = "white";
+          }
+        }, interval);
+      }
+
+
+      /*******************************************************
+       * GENERAZIONE NUVOLE
+       *******************************************************/
+      let skyType = "";
+
+      // Per la gestione "50% di volte fulmini cliccabili" (in sessione stormy)
+      let lightningIsClickable = false; 
+
+      function generateClouds() {
+        // Resetta strobeTriggered quando generiamo un nuovo set di nuvole
+        // (quindi ogni "nuovo" stormy potrà di nuovo avere lo strobe)
+        strobeTriggered = false;
+
+        const randomIntensity = Math.random();
+        let cloudCount;
+
+        if (randomIntensity < 0.3) {
+          skyType = "clear";
+          cloudCount = 5;
+        } else if (randomIntensity < 0.7) {
+          skyType = "moderate";
+          cloudCount = 10;
+        } else {
+          skyType = "stormy";
+          cloudCount = 20;
+        }
+
+        // Se siamo in stormy, prepariamo la condizione "50% di volte fulmini cliccabili"
+        if (skyType === "stormy") {
+          lightningIsClickable = (Math.random() < 0.5);
+        } else {
+          lightningIsClickable = false;
+        }
+
+        for (let i = 0; i < cloudCount; i++) {
+          const container = document.createElement("div");
+          container.className = "cloud-container";
+
+          const animDuration = Math.random() * 30 + 60; // 60s-90s
+          container.style.animationDuration = `${animDuration}s`;
+
+          const topPos = Math.random() * 80 + 5;
+          container.style.top = `${topPos}%`;
+
+          // Creazione cloud-text
+          const cloudText = document.createElement("div");
+          cloudText.className = "cloud-text";
+          cloudText.textContent = cloudTemplates[Math.floor(Math.random() * cloudTemplates.length)];
+
+          // Se stormy => alcune nuvole in grassetto
+          if (skyType === "stormy" && Math.random() < 0.3) {
+            cloudText.classList.add("bold-cloud");
+          }
+
+          container.appendChild(cloudText);
+
+          // Se stormy => Fulmine
+          if (skyType === "stormy") {
+            if (Math.random() < 0.3) {
+              const lightning = document.createElement("div");
+              lightning.className = "lightning";
+              lightning.textContent = "⚡";
+              lightning.style.top = (Math.random() * 20 + 10) + "px";
+              lightning.style.left = (Math.random() * 50 + 10) + "px";
+
+              // Blink random
+              const randBlink = (Math.random() * 1.5 + 0.5).toFixed(2); // 0.5–2s
+              lightning.style.animation = `lightningBlink ${randBlink}s infinite steps(1, end)`;
+
+              // Se i fulmini sono cliccabili, rimuoviamo pointer-events:none e settiamo l'handler
+              if (lightningIsClickable) {
+                lightning.style.pointerEvents = "auto";
+                lightning.addEventListener("click", () => {
+                  // se strobo non è ancora partito
+                  if (!strobeTriggered) {
+                    strobeEffect(5, 300);
+                  }
+                });
+              }
+
+              container.appendChild(lightning);
+            }
+          }
+
+          container.addEventListener("animationend", () => container.remove());
+          document.body.appendChild(container);
+        }
+
+        // Stormy => impedisce comparsa di altri simboli (bird, rare, plane, musica), e
+        // al 10% di probabilità (esempio) un lampo dello sfondo
+        if (skyType === "stormy" && Math.random() < 0.1) {
+          flickerBackground(5, 1000);
+        } else if (skyType === "clear" || skyType === "moderate") {
+          // in non-stormy => spawn simboli
+          spawnExtraSymbols(skyType);
+        }
+      }
+
+      function flickerBackground(times, interval) {
+        let count = 0;
+        const flicker = setInterval(() => {
+          document.body.style.backgroundColor =
+            document.body.style.backgroundColor === "black" ? "white" : "black";
+          count++;
+          if (count === times * 2) {
+            clearInterval(flicker);
+            document.body.style.backgroundColor = "white";
+          }
+        }, interval);
+      }
+
+      /*******************************************************
+       * SIMBOLI EXTRA (solo in clear/moderate)
+       *******************************************************/
+      function spawnExtraSymbols(type) {
+        // In precedenza spawnavamo 1 simbolo random
+        // Ora aggiungiamo la chance di quei 10 uccelli simultanei
+        // e la generazione random standard.
+
+        // Con una bassa probabilità compare la "raffica" di 10 uccelli
+        if (Math.random() < 0.05) { // 5% di probabilità
+          createTenBirdsSimultaneously();
+        } else {
+          // altrimenti spawn di un simbolo random
+          spawnRandomSymbol();
+        }
+      }
+
+      // Spawna un simbolo a caso (bird, rare, plane, ecc.)
+      function spawnRandomSymbol() {
+        const rand = Math.random();
+        if (rand < 0.4) {
+          createBirdSymbol();
+        } else if (rand < 0.7) {
+          createRareBottomSymbol();
+        } else {
+          createPlaneSymbol();
+        }
+      }
+
+      // Funzione che crea 10 uccelli simultaneamente in posizioni diverse
+      function createTenBirdsSimultaneously() {
+        for (let i = 0; i < 10; i++) {
+          createBirdSymbol();
+        }
+      }
+
+      function createBirdSymbol() {
+        const symbolEl = document.createElement("div");
+        symbolEl.className = "symbol";
+        symbolEl.textContent = "𓅮";
+
+        const topPos = getSafeTopPosition("bird", 5, 5, 80);
+        symbolEl.style.top = `${topPos}%`;
+
+        symbolEl.style.animation = "moveRightToLeft 20s linear forwards";
+        document.body.appendChild(symbolEl);
+
+        let toggle = false;
+        const intervalId = setInterval(() => {
+          symbolEl.textContent = toggle ? "𓅮" : "𓅯";
+          toggle = !toggle;
+        }, 1000);
+
+        symbolEl.addEventListener("animationend", () => {
+          clearInterval(intervalId);
+          symbolEl.remove();
+          freeTopPosition("bird", topPos);
+        });
+      }
+
+      function createRareBottomSymbol() {
+        const symbolEl = document.createElement("div");
+        symbolEl.className = "symbol";
+        symbolEl.textContent = "𓂃 ࣪˖ ִֶָ𐀔";
+
+        const topPos = getSafeTopPosition("rare", 5, 80, 90);
+        symbolEl.style.top = `${topPos}%`;
+
+        symbolEl.style.animation = "moveLeftToRight 25s linear forwards";
+        document.body.appendChild(symbolEl);
+
+        let toggle = false;
+        const intervalId = setInterval(() => {
+          symbolEl.textContent = toggle ? "𓂃 ࣪˖ ִֶཐི༏ཋྀ" : "𓂃 ࣪˖ ִֶָ𐀔";
+          toggle = !toggle;
+        }, 1000);
+
+        symbolEl.addEventListener("animationend", () => {
+          clearInterval(intervalId);
+          symbolEl.remove();
+          freeTopPosition("rare", topPos);
+        });
+      }
+
+      function createPlaneSymbol() {
+        const symbolEl = document.createElement("div");
+        symbolEl.className = "symbol";
+        symbolEl.textContent = "ᯓ ✈︎";
+
+        const topPos = getSafeTopPosition("plane", 5, 5, 20);
+        symbolEl.style.top = `${topPos}%`;
+
+        symbolEl.style.animation = "moveLeftToRight 15s linear forwards";
+        document.body.appendChild(symbolEl);
+
+        symbolEl.addEventListener("animationend", () => {
+          symbolEl.remove();
+          freeTopPosition("plane", topPos);
+        });
+      }
+
+      /*******************************************************
+       * LOGICA DI ESECUZIONE
+       *******************************************************/
+      // Generiamo nuvole ogni 20s
+      setInterval(generateClouds, 20000);
+      // Generazione iniziale
+      generateClouds();
+
+      // Se volevi generare simboli con un certo timing fisso, puoi farlo:
+      // (ma ora le generazioni avvengono nel branch "clear/moderate" di generateClouds).
+      // Se ti serve, mantieni o rimuovi:
+      // setInterval(spawnRandomSymbol, 40000);
+    });
+  </script>
+</body>
+</html>

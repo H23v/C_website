@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EXON | Delusion of Equilibrium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: transparent;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #4e4d4d;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .work-page {
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 3.5rem 2.5rem 5rem;
+            color: #4e4d4d;
+        }
+
+        .work-page * {
+            box-sizing: border-box;
+        }
+
+        .work-exon__content-width {
+            width: 80%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .work-exon__hero {
+            margin-bottom: 2.6rem;
+        }
+
+        .work-exon__year {
+            margin: 0 0 0.35rem 0;
+            font-size: 1rem;
+            padding-top: 1rem;
+            line-height: 1;
+            font-weight: 400;
+            font-family: "Crimson Text", serif;
+            color: #666666;
+            text-align: left;
+        }
+
+        .work-exon__title {
+            text-align: center;
+            padding-top: 0rem;
+            margin: 0 0 0.45rem 0;
+            font-size: 36px;
+            line-height: 0.95;
+            font-weight: 300;
+            font-family: "Crimson Text", serif;
+            color: #4E4D4D;
+        }
+
+        .work-exon__meta {
+            text-align: center;
+            margin: 0 0 1.5rem 0;
+            font-size: 16px;
+            font-family: "Crimson Text", serif;
+            color: #666666;
+            text-transform: none;
+            font-style: italic;
+        }
+
+        .work-exon__section {
+            margin-top: 2.6rem;
+        }
+
+        .work-exon__section-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin: 5rem 0 1.2rem 0;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.1;
+            text-align: center;
+        }
+
+        .work-exon__text {
+            margin-top: 4rem;
+            font-size: 10px;
+            line-height: 1.2;
+            color: #3E3E3E;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        .work-exon__text+.work-exon__text {
+            margin-top: 4rem;
+            font-size: 10px;
+            line-height: 1.2;
+            color: #3E3E3E;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        .work-exon__hero-media {
+            margin-top: 0rem;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid rgba(78, 77, 77, 0.08);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 211, 255, 0.5) 0%, rgba(255, 255, 255, 0.85) 100%);
+            position: relative;
+        }
+
+        .work-exon__video-trigger,
+        .work-exon__video-player {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .work-exon__video-trigger {
+            border: 0;
+            padding: 0;
+            cursor: pointer;
+            background: transparent;
+            display: block;
+        }
+
+        .work-exon__video-trigger img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+
+        .work-exon__video-trigger::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.14));
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .work-exon__cursor-trailer {
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translate(18px, -50%);
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            opacity: 0;
+            z-index: 1000;
+            transition: opacity 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .work-exon__cursor-trailer.is-active {
+            opacity: 1;
+        }
+
+        .work-exon__cursor-arrow {
+            font-family: "Crimson Text", serif;
+            font-size: 1rem;
+            line-height: 1;
+            color: #ffffff;
+        }
+
+        .work-exon__cursor-wave {
+            display: inline-flex;
+            align-items: center;
+            font-family: "Crimson Text", serif;
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 3;
+            text-shadow: 0 0 3px #ffffff;
+            color: #ffffffd2;
+        }
+
+        .work-exon__cursor-wave span {
+            display: inline-block;
+            animation: workExonWave 1.15s ease-in-out infinite;
+        }
+
+        .work-exon__cursor-wave span:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+
+        .work-exon__cursor-wave span:nth-child(3) {
+            animation-delay: 0.10s;
+        }
+
+        .work-exon__cursor-wave span:nth-child(4) {
+            animation-delay: 0.15s;
+        }
+
+        .work-exon__cursor-wave span:nth-child(5) {
+            animation-delay: 0.20s;
+        }
+
+        .work-exon__cursor-wave span:nth-child(6) {
+            animation-delay: 0.25s;
+        }
+
+        .work-exon__cursor-wave span:nth-child(7) {
+            animation-delay: 0.30s;
+        }
+
+        .work-exon__cursor-wave span:nth-child(8) {
+            animation-delay: 0.35s;
+        }
+
+        @keyframes workExonWave {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-2px);
+            }
+        }
+
+        .work-exon__video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .work-exon__intro-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 120px;
+            gap: 1.15rem;
+            align-items: start;
+        }
+
+        .work-exon__icon-link {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin-left: auto;
+            text-decoration: none;
+        }
+
+        .work-exon__media-column {
+            min-width: 0;
+        }
+
+        .work-exon__side-actions {
+            margin-top: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.05rem;
+        }
+
+        .work-exon__action-link {
+            font-family: "Crimson Text", serif;
+            font-size: 0.92rem;
+            line-height: 1.15;
+            color: #FF56FF;
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            border: 0;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+
+            transform: translateY(9rem);
+        }
+
+        .work-exon__action-link:hover {
+            color: #FF56FF;
+            opacity: 0.8;
+        }
+
+        .work-exon__icon-image {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .work-exon__intro-text {
+            min-width: 0;
+            padding-top: 0.8rem;
+        }
+
+        .work-exon__workflow-image {
+            width: 100%;
+            display: block;
+            margin-top: -2.5rem;
+        }
+
+        .work-exon__workflow-notes {
+            margin-top: -2.5rem;
+            width: 100%;
+        }
+
+        .work-exon__visual-stack {
+            display: grid;
+            gap: 1.1rem;
+        }
+
+        .work-exon__poster-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.1rem;
+            max-width: 420px;
+            /* 👈 RIDUCE I POSTER */
+            margin: 0 auto;
+        }
+
+        .work-exon__media-item {
+            width: 100%;
+        }
+
+        .work-exon__media-card {
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .work-exon__media-card--poster,
+        .work-exon__media-card--banner,
+        .work-exon__media-card--pair {
+            aspect-ratio: auto;
+            width: 100%;
+        }
+
+        .work-exon__pair-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.1rem;
+        }
+
+        .work-exon__media-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+
+        .work-exon__section-title-prefix {
+            color: #4D4D4D;
+            background: transparent;
+            padding: 0;
+        }
+
+        .work-exon__section-title-highlight {
+            color: #ffffff;
+            background: #4D4D4D;
+            padding: 0.02rem 0.2rem 0.08rem;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .work-exon__fold {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
+        }
+
+        .work-exon__fold.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .work-exon__media-label {
+            display: inline-block;
+            margin-top: 0.45rem;
+            color: #00000043;
+            font-size: 0.8rem;
+            letter-spacing: 0.07em;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-style: italic;
+            padding: 0.22rem 0.42rem;
+            text-align: left;
+            width: auto;
+            max-width: 60%;
+            line-height: 1.2;
+        }
+
+        .work-exon__role-text {
+            max-width: 31rem;
+        }
+
+        .work-exon__credits {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem 1.2rem;
+            margin-top: 0.6rem;
+        }
+
+        .work-exon__credit {
+            border-top: 1px solid rgba(78, 77, 77, 0.12);
+            padding-top: 0.35rem;
+        }
+
+        .work-exon__credit-label {
+            display: block;
+            font-size: 10px;
+            font-family: "Crimson Text", serif;
+            font-style: italic;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            color: #4D4D4D;
+            margin-bottom: 0.25rem;
+        }
+
+        .work-exon__credit-value {
+            display: block;
+            font-size: 10px;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            color: #545454;
+            line-height: 1.3;
+        }
+
+        [data-fade] {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(80, 80, 80, 0.3);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(80, 80, 80, 0.6);
+        }
+
+        @media (max-width: 860px) {
+            .work-exon__content-width {
+                width: 86%;
+            }
+
+            .work-exon__intro-row,
+            .work-exon__pair-grid,
+            .work-exon__credits {
+                grid-template-columns: 1fr;
+            }
+
+            .work-exon__intro-row {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 120px;
+                gap: 1.15rem;
+                align-items: start;
+            }
+
+            .work-exon__icon-link {
+                display: block;
+                width: 100%;
+                max-width: 96px;
+                margin-left: auto;
+                text-decoration: none;
+            }
+
+            .work-exon__side-actions {
+                margin-top: 0.9rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.05rem;
+            }
+
+            .work-exon__intro-text {
+                min-width: 0;
+                padding-top: 0.8rem;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .work-page {
+                padding: 2rem 1.2rem 3rem;
+            }
+
+            .work-exon__title {
+                padding-top: 2rem;
+            }
+
+            .work-exon__content-width {
+                width: 100%;
+            }
+
+            .work-exon__play-badge {
+                width: 58px;
+                height: 58px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="work-page work-exon">
+
+        <section class="work-exon__hero" data-fade>
+            <div class="work-exon__content-width">
+                <p class="work-exon__year">2025</p>
+                <h1 class="work-exon__title">EXON | Delusion of Equilibrium</h1>
+                <p class="work-exon__meta">engagement · game narrative design · promotional visual design</p>
+            </div>
+
+        </section>
+
+        <section class="work-exon__section" data-fade>
+            <div class="work-exon__content-width">
+                <div class="work-exon__intro-row">
+                    <div class="work-exon__media-column">
+                        <div class="work-exon__hero-media" data-fade>
+                            <button class="work-exon__video-trigger" id="videoTrigger" type="button"
+                                aria-label="Play EXON video">
+                                <img src="content/anteprima.png" alt="EXON video preview">
+
+                            </button>
+                            <div class="work-exon__video-player" id="videoPlayer" hidden></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a class="work-exon__icon-link" id="robloxLink"
+                            href="https://www.roblox.com/it/games/85871727647981/EXON" target="_blank"
+                            rel="noopener noreferrer">
+                            <img class="work-exon__icon-image" src="content/exon-icon.png" alt="EXON icon">
+                        </a>
+                        <div class="work-exon__side-actions">
+                            <button class="work-exon__action-link" id="playVideoButton" type="button">/*play
+                                video</button>
+                            <a class="work-exon__action-link" href="https://www.roblox.com/it/games/85871727647981/EXON"
+                                target="_blank" rel="noopener noreferrer">/*open Roblox</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="work-exon__intro-text">
+                    <p class="work-exon__text">
+                        EXON is a multiplayer game that immerses players in a techno-syncretic cult where technology
+                        is transcendentally worshipped as a deity. The cult is committed to replicating the natural
+                        realm with the goal of saving the world from ecosystem instability. Discover the truth
+                        behind the cult on the Roblox platform.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="work-exon__fold" id="contentFold">
+            <section class="work-exon__section" data-fade>
+                <div class="work-exon__content-width">
+                    <h2 class="work-exon__section-title"><span class="work-exon__section-title-prefix">Map_</span><span
+                            class="work-exon__section-title-highlight">Workflow</span></h2>
+                    <img class="work-exon__workflow-image" src="content/exon-workflow.png" alt="EXON workflow visual">
+                    <div class="work-exon__workflow-notes">
+                        <p class="work-exon__text">
+                            This workflow maps how the project moved from concept to communication, connecting
+                            atmosphere
+                            building, narrative framing, poster design and the translation of the game’s internal logic
+                            into
+                            public-facing materials for Milano Digital Week.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="work-exon__section" data-fade>
+                <div class="work-exon__content-width">
+                    <h2 class="work-exon__section-title"><span
+                            class="work-exon__section-title-prefix">Visual_</span><span
+                            class="work-exon__section-title-highlight">Materials</span></h2>
+
+                    <div class="work-exon__visual-stack">
+                        <div class="work-exon__poster-grid">
+                            <div class="work-exon__media-item">
+                                <div class="work-exon__media-card work-exon__media-card--poster">
+                                    <img src="content/exon-p1.jpg" alt="EXON poster 01">
+                                </div>
+                                <div class="work-exon__media-label">Game poster design</div>
+                            </div>
+
+                            <div class="work-exon__media-item">
+                                <div class="work-exon__media-card work-exon__media-card--poster">
+                                    <img src="content/exon-p2.jpg" alt="EXON poster 02">
+                                </div>
+                                <div class="work-exon__media-label">Communication visuals#1</div>
+                            </div>
+
+                            <div class="work-exon__media-item">
+                                <div class="work-exon__media-card work-exon__media-card--poster">
+                                    <img src="content/exon-p3.jpg" alt="EXON poster 03">
+                                </div>
+                                <div class="work-exon__media-label">Communication visuals#2</div>
+                            </div>
+
+                            <div class="work-exon__media-item">
+                                <div class="work-exon__media-card work-exon__media-card--poster">
+                                    <img src="content/exon-p4.jpg" alt="EXON poster 04">
+                                </div>
+                                <div class="work-exon__media-label">Communication visuals#3</div>
+                            </div>
+                        </div>
+
+                        <div class="work-exon__media-item">
+                            <div class="work-exon__media-card work-exon__media-card--banner">
+                                <img src="content/exon-web.png" alt="EXON web banner">
+                            </div>
+                            <div class="work-exon__media-label">Banner web</div>
+                        </div>
+
+                        <div class="work-exon__pair-grid">
+                            <div class="work-exon__media-item">
+                                <div class="work-exon__media-card work-exon__media-card--pair">
+                                    <img src="content/exon-inst.jpeg" alt="EXON printed cushions">
+                                </div>
+                                <div class="work-exon__media-label">Print illustration</div>
+                            </div>
+
+                            <div class="work-exon__media-item">
+                                <div class="work-exon__media-card work-exon__media-card--pair">
+                                    <img src="content/exon-photo.gif" alt="EXON exhibition visual">
+                                </div>
+                                <div class="work-exon__media-label">Exhibition</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <section class="work-exon__section" data-fade>
+                <div class="work-exon__content-width">
+                    <p class="work-exon__text">
+                        Within the project I worked on the narrative construction of the game and on the development of
+                        its visual communication. My role focused on shaping the tone and conceptual atmosphere of EXON,
+                        then translating that identity into posters, web materials, workflow documentation and
+                        exhibition-facing assets capable of presenting the project consistently across different
+                        contexts.<br><br>
+                        2025 © The video game was designed as part of the Virtual Realities and Paradigms of Complexity
+                        course at the Brera Academy of Fine Arts in Milan, starting from feelings of curiosity about
+                        creating online communities.
+                    </p>
+                </div>
+            </section>
+
+            <section class="work-exon__section" data-fade>
+                <div class="work-exon__content-width">
+                    <h2 class="work-exon__section-title"><span class="work-exon__section-title-prefix">*</span><span
+                            class="work-exon__section-title-highlight">Credits</span></h2>
+                    <div class="work-exon__credits">
+                        <div class="work-exon__credit">
+                            <span class="work-exon__credit-label">Project</span>
+                            <span class="work-exon__credit-value">EXON | Delusion of Equilibrium</span>
+                        </div>
+
+                        <div class="work-exon__credit">
+                            <span class="work-exon__credit-label">Context</span>
+                            <span class="work-exon__credit-value">Milano Digital Week 2025<br>Open Class, Accademia di
+                                Belle
+                                Arti di Brera</span>
+                        </div>
+
+                        <div class="work-exon__credit">
+                            <span class="work-exon__credit-label">Media</span>
+                            <span class="work-exon__credit-value">Posters, web communication, visual assets, narrative
+                                development, and workflow materials for the game.</span>
+                        </div>
+
+                        <div class="work-exon__credit">
+                            <span class="work-exon__credit-label">Collaboration</span>
+                            <span class="work-exon__credit-value">Developed in collaboration with Adriana Ribalcenco,
+                                the
+                                EXON team, and the Accademia di Belle Arti di Brera.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <div class="work-exon__cursor-trailer" id="cursorTrailer" aria-hidden="true">
+        <span class="work-exon__cursor-arrow">*</span>
+        <span class="work-exon__cursor-wave">
+            <span>T</span><span>r</span><span>a</span><span>i</span><span>l</span><span>e</span><span>r</span>
+        </span>
+    </div>
+
+    <script>
+        (() => {
+            const elements = document.querySelectorAll('[data-fade]');
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                        }
+                    });
+                },
+                {
+                    threshold: 0.12,
+                    rootMargin: '0px 0px -8% 0px'
+                }
+            );
+
+            elements.forEach((el) => observer.observe(el));
+        })();
+
+        (() => {
+            const trigger = document.getElementById('videoTrigger');
+            const player = document.getElementById('videoPlayer');
+            const playButton = document.getElementById('playVideoButton');
+            const cursorTrailer = document.getElementById('cursorTrailer');
+
+            if (!trigger || !player) return;
+
+            const playVideo = () => {
+                if (!player.innerHTML.trim()) {
+                    player.innerHTML = `
+                        <iframe
+                            src="https://www.youtube-nocookie.com/embed/bR7mXvZSrpg?autoplay=1&rel=0&modestbranding=1&controls=1&iv_load_policy=3&fs=0&disablekb=1&playsinline=1"
+                            title="EXON video"
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
+                    `;
+                }
+                player.hidden = false;
+                trigger.hidden = true;
+                cursorTrailer?.classList.remove('is-active');
+            };
+
+            const moveTrailer = (event) => {
+                if (!cursorTrailer) return;
+                cursorTrailer.style.left = `${event.clientX}px`;
+                cursorTrailer.style.top = `${event.clientY}px`;
+            };
+
+            trigger.addEventListener('mouseenter', () => {
+                cursorTrailer?.classList.add('is-active');
+            });
+
+            trigger.addEventListener('mouseleave', () => {
+                cursorTrailer?.classList.remove('is-active');
+            });
+
+            trigger.addEventListener('mousemove', moveTrailer);
+            trigger.addEventListener('click', playVideo);
+            playButton?.addEventListener('click', playVideo);
+        })();
+
+        (() => {
+            const contentFold = document.getElementById('contentFold');
+            if (!contentFold) return;
+
+            let revealed = false;
+            let touchStartY = null;
+
+            const revealFold = () => {
+                if (revealed) return;
+                revealed = true;
+                contentFold.classList.add('is-visible');
+            };
+
+            window.addEventListener('wheel', (event) => {
+                if (event.deltaY > 6) revealFold();
+            }, { passive: true });
+
+            window.addEventListener('touchstart', (event) => {
+                touchStartY = event.touches[0]?.clientY ?? null;
+            }, { passive: true });
+
+            window.addEventListener('touchmove', (event) => {
+                const currentY = event.touches[0]?.clientY;
+                if (touchStartY !== null && currentY !== undefined && touchStartY - currentY > 10) {
+                    revealFold();
+                }
+            }, { passive: true });
+
+            window.addEventListener('keydown', (event) => {
+                if (["ArrowDown", "PageDown", "Space"].includes(event.code)) {
+                    revealFold();
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

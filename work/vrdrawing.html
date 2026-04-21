@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VR Drawing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #4e4d4d;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    body.viewer-open {
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .work-page {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 5rem;
+      color: #4e4d4d;
+    }
+
+    .work-page * {
+      box-sizing: border-box;
+    }
+
+    .work-pointless__content-width {
+      width: 80%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .work-pointless__hero {
+      margin-bottom: 2.6rem;
+    }
+
+    .work-pointless__year {
+      margin: 0 0 0.35rem 0;
+      font-size: 1rem;
+      padding-top: 1rem;
+      line-height: 1;
+      font-weight: 400;
+      font-family: "Crimson Text", serif;
+      color: #666666;
+      text-align: left;
+    }
+
+    .work-pointless__title {
+      text-align: center;
+      margin: 0 0 0.45rem 0;
+      font-size: 36px;
+      line-height: 0.95;
+      font-weight: 300;
+      font-family: "Crimson Text", serif;
+      color: #4E4D4D;
+    }
+
+    .work-pointless__meta {
+      text-align: center;
+      margin: 0 0 1.5rem 0;
+      font-size: 16px;
+      font-family: "Crimson Text", serif;
+      color: #666666;
+      font-style: italic;
+    }
+
+    .work-pointless__section {
+      margin-top: 2.6rem;
+    }
+
+    .work-pointless__intro-text {
+      width: 100%;
+    }
+
+    .work-pointless__text {
+      margin-top: 2rem;
+      font-size: 10px;
+      line-height: 1.2;
+      color: #3E3E3E;
+      font-family: "Roboto", Arial, Helvetica, sans-serif;
+      text-align: center;
+
+      width: 100%;
+    }
+
+
+    .work-pointless__hero-link {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 0.8rem auto;
+      font-family: "Crimson Text", serif;
+      font-size: 0.92rem;
+      line-height: 1.15;
+      color: #FF56FF;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 0;
+      text-align: center;
+    }
+
+    .work-pointless__hero-link:hover {
+      color: #FF56FF;
+      opacity: 0.8;
+    }
+
+    .work-pointless__quad-strip {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .work-pointless__quad-strip::before,
+    .work-pointless__quad-strip::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 26px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .work-pointless__quad-strip::before {
+      left: 0;
+      background: transparent;
+    }
+
+    .work-pointless__quad-strip::after {
+      right: 0;
+      background: transparent;
+    }
+
+    .work-pointless__quad-grid {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 118px;
+      gap: 0.9rem;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      padding: 0.1rem 0;
+    }
+
+    .work-pointless__quad-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .work-pointless__quad-card {
+      aspect-ratio: 1 / 1;
+      border-radius: 0.35rem;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.14);
+      background: transparent;
+      transition: box-shadow 0.28s ease;
+      cursor: pointer;
+    }
+
+    .work-pointless__quad-card:hover {
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.75);
+    }
+
+    .work-pointless__quad-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .work-pointless__viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgb(209, 209, 209);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .work-pointless__viewer.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .work-pointless__viewer-shell {
+      width: 100%;
+      max-width: 980px;
+      height: 100vh;
+      margin: 0 auto;
+      padding: 1.5rem 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .work-pointless__viewer-track {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 100%;
+      gap: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+    }
+
+    .work-pointless__viewer-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .work-pointless__viewer-slide {
+      width: 100%;
+      min-width: 0;
+      scroll-snap-align: start;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .work-pointless__viewer-inner {
+      width: 80%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .work-pointless__viewer-header {
+      position: relative;
+      min-height: 6.2rem;
+      flex: 0 0 auto;
+    }
+
+    .work-pointless__viewer-slide .work-pointless__meta,
+    .work-pointless__viewer-slide .work-pointless__year,
+    .work-pointless__viewer-slide .work-pointless__title {
+      position: absolute;
+      left: 0;
+      text-align: left;
+      margin: 0;
+    }
+
+    .work-pointless__viewer-slide .work-pointless__meta {
+      top: 3rem;
+    }
+
+    .work-pointless__viewer-slide .work-pointless__year {
+      top: 4rem;
+      left: -2.5rem;
+    }
+
+    .work-pointless__viewer-slide .work-pointless__title {
+      top: 2rem;
+    }
+
+    .work-pointless__viewer-toolbar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.45rem;
+      flex: 0 0 auto;
+    }
+
+    .work-pointless__back-button {
+      border: 0;
+      background: transparent;
+      color: #4E4D4D;
+      font-family: "Crimson Text", serif;
+      font-size: 0.92rem;
+      text-decoration: underline;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .work-pointless__back-button:hover {
+      opacity: 0.7;
+    }
+
+    .work-pointless__viewer-counter {
+      font-family: "Crimson Text", serif;
+      font-size: 0.88rem;
+      color: #666666;
+    }
+
+    .work-pointless__viewer-media {
+      width: 100%;
+      aspect-ratio: 6 / 4;
+      border-radius: 0.35rem;
+      overflow: hidden;
+      background: #f2f2f2;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+      flex: 0 0 auto;
+    }
+
+    .work-pointless__viewer-media img,
+    .work-pointless__viewer-media video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .work-pointless__viewer-text {
+      margin-top: 0.45rem;
+      font-size: 10px;
+      line-height: 1.2;
+      color: #3E3E3E;
+      font-family: "Roboto", Arial, Helvetica, sans-serif;
+      text-align: left;
+      flex: 0 0 auto;
+    }
+
+    [data-fade] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      will-change: opacity, transform;
+    }
+
+    .is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .work-pointless__viewer-carousel {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      width: 100%;
+    }
+
+    .work-pointless__nav {
+      border: 0;
+      background: transparent;
+      color: #4E4D4D;
+      font-family: "Crimson Text", serif;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 0.25rem;
+      flex: 0 0 auto;
+    }
+
+    .work-pointless__nav:hover {
+      opacity: 0.65;
+    }
+
+    @media (max-width: 860px) {
+      .work-pointless__content-width {
+        width: 86%;
+      }
+
+      .work-pointless__viewer-inner {
+        width: 86%;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .work-page {
+        padding: 2rem 1.2rem 3rem;
+      }
+
+      .work-pointless__title {
+        padding-top: 2rem;
+      }
+
+      .work-pointless__content-width {
+        width: 100%;
+      }
+
+      .work-pointless__quad-grid {
+        grid-auto-columns: 100px;
+      }
+
+      .work-pointless__viewer-shell {
+        padding: 2rem 1.2rem 1.4rem;
+      }
+
+      .work-pointless__viewer-inner {
+        width: 100%;
+      }
+
+      .work-pointless__viewer-header {
+        min-height: 7.1rem;
+      }
+
+      .work-pointless__viewer-slide .work-pointless__meta {
+        top: 0;
+      }
+
+      .work-pointless__viewer-slide .work-pointless__year {
+        top: 1.05rem;
+      }
+
+      .work-pointless__viewer-slide .work-pointless__title {
+        top: 2rem;
+        max-width: 84%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="work-page work-pointless" id="workPointless">
+    <section class="work-pointless__hero" data-fade>
+      <div class="work-pointless__content-width">
+        <p class="work-pointless__year">202n</p>
+        <h1 class="work-pointless__title">VR Drawing</h1>
+        <p class="work-pointless__meta">Virtual reality drawing serie · Meta Quest</p>
+      </div>
+    </section>
+
+    <section class="work-pointless__section" data-fade>
+      <div class="work-pointless__content-width">
+        <span class="work-pointless__hero-link">/*in sviluppo</span>
+
+        <div class="work-pointless__quad-strip">
+          <div class="work-pointless__quad-grid" id="quadScroller">
+            <div class="work-pointless__quad-card" data-gallery-key="work1"><img src="opere/vrdrawing-1.png"
+                alt="VR Drawing visual 1"></div>
+            <div class="work-pointless__quad-card" data-gallery-key="work2"><img src="opere/gigante-2.png"
+                alt="VR Drawing visual 2"></div>
+          </div>
+        </div>
+
+        <div class="work-pointless__intro-text">
+          <p class="work-pointless__text">
+            Serie di oggetti 3D disegnati in realtà virtuale, realizzati con Meta Quest & Medium by Adobe.
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="work-pointless__viewer" id="workViewer">
+    <div class="work-pointless__viewer-shell">
+      <div class="work-pointless__viewer-track" id="viewerTrack"></div>
+    </div>
+  </div>
+
+  <script src="vr-gallery.js"></script>
+  <script>
+    (() => {
+      const elements = document.querySelectorAll('[data-fade]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('is-visible');
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+      elements.forEach((el) => observer.observe(el));
+    })();
+
+    (() => {
+      const scroller = document.getElementById('quadScroller');
+      if (!scroller) return;
+
+      scroller.addEventListener('wheel', (event) => {
+        const delta = Math.abs(event.deltaY) > Math.abs(event.deltaX)
+          ? event.deltaY
+          : event.deltaX;
+
+        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+        if (!delta || maxScroll <= 0) return;
+
+        event.preventDefault();
+        scroller.scrollLeft += delta;
+      }, { passive: false });
+    })();
+
+    (() => {
+      const body = document.body;
+      const viewer = document.getElementById('workViewer');
+      const track = document.getElementById('viewerTrack');
+      const cards = Array.from(document.querySelectorAll('.work-pointless__quad-card'));
+      const dataMap = window.WORK_GALLERIES || {};
+      const orderedKeys = cards
+        .map(card => card.dataset.galleryKey)
+        .filter(key => dataMap[key]);
+
+      let currentWorkIndex = 0;
+      let innerIndexMap = {};
+
+      orderedKeys.forEach((key) => {
+        innerIndexMap[key] = 0;
+      });
+
+      function mediaHtml(item) {
+        if (!item) return '';
+        if (item.type === 'video') {
+          return `<video src="${item.src}" controls playsinline ${item.poster ? `poster="${item.poster}"` : ''}></video>`;
+        }
+        return `<img src="${item.src}" alt="${item.alt || ''}">`;
+      }
+
+      function renderSlides() {
+        track.innerHTML = orderedKeys.map((key, index) => {
+          const entry = dataMap[key] || {};
+          const items = Array.isArray(entry.items) ? entry.items : [];
+          const innerIndex = Math.max(0, Math.min(innerIndexMap[key] || 0, items.length - 1));
+          const currentItem = items[innerIndex] || null;
+
+          return `
+          <article class="work-pointless__viewer-slide" data-index="${index}" data-key="${key}">
+            <div class="work-pointless__viewer-inner">
+
+              <div class="work-pointless__viewer-header">
+                <p class="work-pointless__meta">${entry.meta || ''}</p>
+                <p class="work-pointless__year">${entry.year || ''}</p>
+              </div>
+
+              <div class="work-pointless__viewer-toolbar">
+                <button class="work-pointless__back-button" type="button" data-close-viewer>
+                 back
+                </button>
+                <span class="work-pointless__viewer-counter">
+                  ${index + 1} / ${orderedKeys.length}
+                </span>
+              </div>
+
+              <div class="work-pointless__viewer-carousel">
+                <button
+                  class="work-pointless__nav work-pointless__nav--prev"
+                  type="button"
+                  data-prev-inner="${key}"
+                  aria-label="Immagine precedente"
+                  ${items.length <= 1 ? 'style="visibility:hidden;"' : ''}
+                >
+                  ←
+                </button>
+
+                <div class="work-pointless__viewer-media" data-media-box="${key}">
+                  ${mediaHtml(currentItem)}
+                </div>
+
+                <button
+                  class="work-pointless__nav work-pointless__nav--next"
+                  type="button"
+                  data-next-inner="${key}"
+                  aria-label="Immagine successiva"
+                  ${items.length <= 1 ? 'style="visibility:hidden;"' : ''}
+                >
+                  →
+                </button>
+              </div>
+
+              <div class="work-pointless__viewer-text">${entry.text || ''}</div>
+            </div>
+          </article>
+        `;
+        }).join('');
+
+        track.querySelectorAll('[data-close-viewer]').forEach((btn) => {
+          btn.addEventListener('click', closeViewer);
+        });
+
+        track.querySelectorAll('[data-prev-inner]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const key = btn.dataset.prevInner;
+            changeInnerSlide(key, -1);
+          });
+        });
+
+        track.querySelectorAll('[data-next-inner]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const key = btn.dataset.nextInner;
+            changeInnerSlide(key, 1);
+          });
+        });
+      }
+
+      function getSlides() {
+        return Array.from(track.querySelectorAll('.work-pointless__viewer-slide'));
+      }
+
+      function updateInnerMedia(key) {
+        const entry = dataMap[key];
+        if (!entry || !Array.isArray(entry.items) || !entry.items.length) return;
+
+        const mediaBox = track.querySelector(`[data-media-box="${key}"]`);
+        if (!mediaBox) return;
+
+        const innerIndex = innerIndexMap[key] || 0;
+        const item = entry.items[innerIndex];
+        mediaBox.innerHTML = mediaHtml(item);
+      }
+
+      function changeInnerSlide(key, direction) {
+        const entry = dataMap[key];
+        if (!entry || !Array.isArray(entry.items) || entry.items.length <= 1) return;
+
+        const total = entry.items.length;
+        const current = innerIndexMap[key] || 0;
+        innerIndexMap[key] = (current + direction + total) % total;
+
+        updateInnerMedia(key);
+      }
+
+      function updateWorkCounter() {
+        const slides = getSlides();
+        if (!slides.length) return;
+
+        const step = track.clientWidth || 1;
+        currentWorkIndex = Math.max(
+          0,
+          Math.min(slides.length - 1, Math.round(track.scrollLeft / step))
+        );
+
+        track.querySelectorAll('.work-pointless__viewer-counter').forEach((el) => {
+          el.textContent = `${currentWorkIndex + 1} / ${slides.length}`;
+        });
+      }
+
+      function scrollToWork(index, behavior = 'smooth') {
+        const slides = getSlides();
+        if (!slides[index]) return;
+
+        currentWorkIndex = index;
+        track.scrollTo({
+          left: slides[index].offsetLeft,
+          behavior
+        });
+
+        requestAnimationFrame(updateWorkCounter);
+      }
+
+      function changeWork(direction) {
+        const slides = getSlides();
+        if (!slides.length) return;
+
+        const nextIndex = currentWorkIndex + direction;
+        if (nextIndex < 0 || nextIndex >= slides.length) return;
+
+        scrollToWork(nextIndex, 'smooth');
+      }
+
+      function openViewerAt(key) {
+        currentWorkIndex = Math.max(0, orderedKeys.indexOf(key));
+        renderSlides();
+
+        viewer.classList.add('is-active');
+        body.classList.add('viewer-open');
+
+        scrollToWork(currentWorkIndex, 'auto');
+      }
+
+      function closeViewer() {
+        viewer.classList.remove('is-active');
+        body.classList.remove('viewer-open');
+        track.scrollLeft = 0;
+      }
+
+      cards.forEach((card) => {
+        card.addEventListener('click', () => {
+          const key = card.dataset.galleryKey;
+          if (!dataMap[key]) return;
+          openViewerAt(key);
+        });
+      });
+
+      function handleViewerWheel(event) {
+        if (!viewer.classList.contains('is-active')) return;
+
+        const delta = Math.abs(event.deltaY) > Math.abs(event.deltaX)
+          ? event.deltaY
+          : event.deltaX;
+
+        if (!delta) return;
+
+        event.preventDefault();
+
+        if (delta > 0) {
+          changeWork(1);
+        } else {
+          changeWork(-1);
+        }
+      }
+
+      viewer.addEventListener('wheel', handleViewerWheel, { passive: false });
+      track.addEventListener('wheel', handleViewerWheel, { passive: false });
+      track.addEventListener('scroll', () => requestAnimationFrame(updateWorkCounter));
+      window.addEventListener('resize', updateWorkCounter);
+
+      document.addEventListener('keydown', (event) => {
+        if (!viewer.classList.contains('is-active')) return;
+
+        if (event.key === 'Escape') {
+          closeViewer();
+        }
+
+        if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+          event.preventDefault();
+          changeWork(1);
+        }
+
+        if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+          event.preventDefault();
+          changeWork(-1);
+        }
+
+        if (event.key === 'ArrowRight') {
+          const key = orderedKeys[currentWorkIndex];
+          if (key) changeInnerSlide(key, 1);
+        }
+
+        if (event.key === 'ArrowLeft') {
+          const key = orderedKeys[currentWorkIndex];
+          if (key) changeInnerSlide(key, -1);
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>

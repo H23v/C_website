@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Metacorpalismo by HACK</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: transparent;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #4e4d4d;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .work-page {
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2rem 2.5rem 5rem;
+            color: #4e4d4d;
+        }
+
+        .work-page * {
+            box-sizing: border-box;
+        }
+
+        .work-pointless__content-width {
+            width: 80%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .work-pointless__hero {
+            margin-bottom: 2.6rem;
+        }
+
+        .work-pointless__year {
+            margin: 0 0 0.35rem 0;
+            font-size: 1rem;
+            padding-top: 1rem;
+            line-height: 1;
+            font-weight: 400;
+            font-family: "Crimson Text", serif;
+            color: #666666;
+            text-align: left;
+        }
+
+        .work-pointless__title {
+            text-align: center;
+            padding-top: 0rem;
+            margin: 0 0 0.45rem 0;
+            font-size: 36px;
+            line-height: 0.95;
+            font-weight: 300;
+            font-family: "Crimson Text", serif;
+            color: #4E4D4D;
+        }
+
+        .work-pointless__meta {
+            text-align: center;
+            margin: 0 0 1.5rem 0;
+            font-size: 16px;
+            font-family: "Crimson Text", serif;
+            color: #666666;
+            text-transform: none;
+            font-style: italic;
+        }
+
+        .work-pointless__section {
+            margin-top: 2.6rem;
+        }
+
+        .work-pointless__section-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin: 5rem 0 1.2rem 0;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.1;
+            text-align: center;
+        }
+
+        .work-pointless__text {
+            margin-top: 0rem;
+            font-size: 10px;
+            line-height: 1.2;
+            color: #3E3E3E;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        .work-pointless__text+.work-pointless__text {
+            margin-top: 4rem;
+            font-size: 10px;
+            line-height: 1.2;
+            color: #3E3E3E;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+
+
+
+
+        .work-pointless__photo-stack {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            margin: 0 auto;
+            overflow: visible;
+            z-index: 3000;
+        }
+
+        .work-pointless__draggable-photo-wrap {
+            position: absolute;
+            width: 160px;
+            max-width: 32%;
+            border-radius: 0.2rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+            background: #fff;
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-drag: none;
+            touch-action: none;
+            z-index: 3000;
+        }
+
+        .work-pointless__draggable-photo-wrap.is-dragging {
+            cursor: grabbing;
+        }
+
+        .work-pointless__draggable-photo {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .work-pointless__draggable-photo--back {
+            position: relative;
+            opacity: 1;
+            transition: opacity 0.35s ease;
+        }
+
+        .work-pointless__draggable-photo--front {
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .work-pointless__draggable-photo-wrap:hover .work-pointless__draggable-photo--back {
+            opacity: 0;
+        }
+
+        .work-pointless__draggable-photo-wrap:hover .work-pointless__draggable-photo--front {
+            opacity: 1;
+        }
+
+        .work-pointless__draggable-photo-wrap--1 {
+            left: 4%;
+            top: 24px;
+            z-index: 3001;
+        }
+
+        .work-pointless__draggable-photo-wrap--2 {
+            left: 17%;
+            top: 122px;
+            z-index: 3002;
+        }
+
+        .work-pointless__draggable-photo-wrap--3 {
+            left: 33%;
+            top: 54px;
+            z-index: 3003;
+        }
+
+        .work-pointless__draggable-photo-wrap--4 {
+            left: 49%;
+            top: 152px;
+            z-index: 3004;
+        }
+
+        .work-pointless__draggable-photo-wrap--5 {
+            left: 64%;
+            top: 34px;
+            z-index: 3005;
+        }
+
+        .work-pointless__draggable-photo-wrap--6 {
+            left: 8%;
+            top: 278px;
+            z-index: 3006;
+        }
+
+        .work-pointless__draggable-photo-wrap--7 {
+            left: 26%;
+            top: 250px;
+            z-index: 3007;
+        }
+
+        .work-pointless__draggable-photo-wrap--8 {
+            left: 49%;
+            top: 290px;
+            z-index: 3008;
+        }
+
+        .work-pointless__draggable-photo-wrap--9 {
+            left: 69%;
+            top: 220px;
+            z-index: 3009;
+        }
+
+        @media (max-width: 720px) {
+            .work-pointless__photo-stack {
+                height: 430px;
+            }
+
+            .work-pointless__draggable-photo-wrap {
+                width: 112px;
+                max-width: 36%;
+            }
+        }
+
+        .work-pointless__hero-media {
+            margin-top: 0rem;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid rgba(78, 77, 77, 0.08);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 211, 255, 0.5) 0%, rgba(255, 255, 255, 0.85) 100%);
+            position: relative;
+        }
+
+        .work-pointless__carousel {
+            background: #ffffff;
+        }
+
+        .work-pointless__carousel-track {
+            position: absolute;
+            inset: 0;
+        }
+
+        .work-pointless__carousel-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .work-pointless__carousel-image.is-active {
+            opacity: 1;
+        }
+
+        .work-pointless__carousel-zone {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 3;
+            border: 0;
+            padding: 0;
+            background: transparent;
+            cursor: none;
+        }
+
+        .work-pointless__carousel-zone--left {
+            left: 0;
+        }
+
+        .work-pointless__carousel-zone--right {
+            right: 0;
+        }
+
+        .work-pointless__carousel-zone:focus-visible {
+            outline: 1px solid rgba(78, 77, 77, 0.35);
+            outline-offset: -1px;
+        }
+
+        .work-pointless__video-trigger,
+        .work-pointless__video-player {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .work-pointless__video-trigger {
+            border: 0;
+            padding: 0;
+            cursor: pointer;
+            background: transparent;
+            display: block;
+        }
+
+        .work-pointless__video-trigger img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+
+        .work-pointless__video-trigger::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.14));
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .work-pointless__cursor-trailer {
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translate(18px, -50%);
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            opacity: 0;
+            z-index: 6000;
+            transition: opacity 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .work-pointless__cursor-trailer.is-active {
+            opacity: 1;
+        }
+
+        .work-pointless__cursor-arrow {
+            font-family: "Crimson Text", serif;
+            font-size: 1rem;
+            line-height: 1;
+            color: #ffffff;
+        }
+
+        .work-pointless__cursor-wave {
+            display: inline-flex;
+            align-items: center;
+            font-family: "Crimson Text", serif;
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 3;
+            text-shadow: 0 0 3px #ffffff;
+            color: #ffffffd2;
+        }
+
+        .work-pointless__cursor-wave span {
+            display: inline-block;
+            animation: workExonWave 1.15s ease-in-out infinite;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(3) {
+            animation-delay: 0.10s;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(4) {
+            animation-delay: 0.15s;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(5) {
+            animation-delay: 0.20s;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(6) {
+            animation-delay: 0.25s;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(7) {
+            animation-delay: 0.30s;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(8) {
+            animation-delay: 0.35s;
+        }
+
+        @keyframes workExonWave {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-2px);
+            }
+        }
+
+        .work-pointless__video-player iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .work-pointless__intro-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 120px;
+            gap: 1.15rem;
+            align-items: start;
+        }
+
+        .work-pointless__icon-link {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin-left: auto;
+            text-decoration: none;
+        }
+
+        .work-pointless__media-column {
+            min-width: 0;
+        }
+
+        .work-pointless__side-actions {
+            margin-top: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.05rem;
+        }
+
+        .work-pointless__action-link {
+            font-family: "Crimson Text", serif;
+            font-size: 0.92rem;
+            line-height: 1.15;
+            color: #FF56FF;
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            border: 0;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .work-pointless__action-link:hover {
+            color: #FF56FF;
+            opacity: 0.8;
+        }
+
+        .work-pointless__icon-image {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .work-pointless__intro-text {
+            min-width: 0;
+            padding-top: 0.8rem;
+        }
+
+        .work-pointless__workflow-image {
+            width: 100%;
+            display: block;
+            margin-top: 0;
+        }
+
+        .work-pointless__workflow-notes {
+            margin-top: 0.45rem;
+            width: 100%;
+        }
+
+
+        .work-pointless__double-image {
+            align-items: start;
+        }
+
+        .work-pointless__single-gif {
+            width: 70%;
+            /* 👈 riduce dimensione */
+            max-width: 120px;
+            /* 👈 limite massimo */
+            margin: 0 auto;
+            /* 👈 centrata */
+            display: block;
+        }
+
+        .work-pointless__visual-stack {
+            display: grid;
+            gap: 1.1rem;
+        }
+
+        .work-pointless__poster-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.1rem;
+            max-width: 420px;
+            /* 👈 RIDUCE I POSTER */
+            margin: 0 auto;
+        }
+
+        .work-pointless__media-item {
+            width: 100%;
+        }
+
+        .work-pointless__media-card {
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .work-pointless__media-card--poster,
+        .work-pointless__media-card--banner,
+        .work-pointless__media-card--pair {
+            aspect-ratio: auto;
+            width: 100%;
+        }
+
+        .work-pointless__pair-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.1rem;
+        }
+
+        .work-pointless__media-card img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+
+        .work-pointless__section-title-prefix {
+            color: #4D4D4D;
+            background: transparent;
+            padding: 0;
+        }
+
+        .work-pointless__section-title-highlight {
+            color: #ffffff;
+            background: #4D4D4D;
+            padding: 0.02rem 0.2rem 0.08rem;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .work-pointless__fold {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            pointer-events: none;
+        }
+
+        .work-pointless__fold.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .work-pointless__media-label {
+            display: inline-block;
+            margin-top: 0.45rem;
+            color: #00000043;
+            font-size: 0.8rem;
+            letter-spacing: 0.07em;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-style: italic;
+            padding: 0.22rem 0.42rem;
+            text-align: left;
+            width: auto;
+            max-width: 60%;
+            line-height: 1.2;
+        }
+
+        .work-pointless__role-text {
+            max-width: 31rem;
+        }
+
+        .work-pointless__credits {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem 1.2rem;
+            margin-top: 0.6rem;
+            margin-bottom: 4rem;
+        }
+
+        .work-pointless__credit {
+            border-top: 1px solid rgba(78, 77, 77, 0.12);
+            padding-top: 0.35rem;
+        }
+
+        .work-pointless__credit-label {
+            display: block;
+            font-size: 10px;
+            font-family: "Crimson Text", serif;
+            font-style: italic;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            color: #4D4D4D;
+            margin-bottom: 0.25rem;
+        }
+
+        .work-pointless__credit-value {
+            display: block;
+            font-size: 10px;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            color: #545454;
+            line-height: 1.3;
+        }
+
+        [data-fade] {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.6rem;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            z-index: 10;
+        }
+
+        .work-pointless__hero-media:hover .video-controls,
+        .work-pointless__hero-media:focus-within .video-controls,
+        .work-pointless__hero-media:active .video-controls {
+            opacity: 1;
+        }
+
+        .video-controls button {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            font-family: "Crimson Text", serif;
+            font-size: 0.9rem;
+            line-height: 1;
+            min-width: 32px;
+            min-height: 28px;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+        }
+
+        .video-controls button:hover,
+        .video-controls button:focus-visible {
+            background: rgba(255, 255, 255, 0.35);
+            outline: none;
+        }
+
+
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(80, 80, 80, 0.3);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(80, 80, 80, 0.6);
+        }
+
+        @media (max-width: 860px) {
+            .work-pointless__content-width {
+                width: 86%;
+            }
+
+            .work-pointless__intro-row,
+            .work-pointless__pair-grid,
+            .work-pointless__credits {
+                grid-template-columns: 1fr;
+            }
+
+            .work-pointless__intro-row {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 120px;
+                gap: 1.15rem;
+                align-items: start;
+            }
+
+            .work-pointless__icon-link {
+                display: block;
+                width: 100%;
+                max-width: 96px;
+                margin-left: auto;
+                text-decoration: none;
+            }
+
+            .work-pointless__side-actions {
+                margin-top: 0.9rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.05rem;
+            }
+
+            .work-pointless__intro-text {
+                min-width: 0;
+                padding-top: 0.8rem;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .work-page {
+                padding: 2rem 1.2rem 3rem;
+            }
+
+            .work-pointless__title {
+                padding-top: 2rem;
+            }
+
+            .work-pointless__content-width {
+                width: 100%;
+            }
+
+            .work-pointless__play-badge {
+                width: 58px;
+                height: 58px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="work-page work-pointless">
+
+        <section class="work-pointless__hero" data-fade>
+            <div class="work-pointless__content-width">
+                <p class="work-pointless__year">2025</p>
+                <h1 class="work-pointless__title">Metacorpalismo</h1>
+                <p class="work-pointless__meta">Opera Video · Animazione · with HACK</p>
+            </div>
+
+        </section>
+
+
+        <section class="work-pointless__section" data-fade>
+            <div class="work-pointless__content-width">
+                <div class="work-pointless__media-column">
+                    <div class="work-pointless__hero-media" data-fade id="websiteTrigger">
+
+                        <video id="mainVideo" class="work-pointless__video-player" autoplay muted loop playsinline>
+                            <source src="content/metacorpalismo.mp4" type="video/mp4">
+                        </video>
+
+                        <div class="video-controls">
+                            <button type="button" id="backBtn" aria-label="Back 5 seconds">‹‹</button>
+                            <button type="button" id="playBtn" aria-label="Pause video">⏸</button>
+                            <button type="button" id="forwardBtn" aria-label="Forward 5 seconds">››</button>
+                        </div>
+
+                    </div>
+
+                    <div class="work-pointless__side-actions">
+                        <a class="work-pointless__action-link"
+                            href="https://docs.google.com/presentation/d/1BCy26kkw4qY4fa61nRFvuuSVcunYwZJBu_hTwa2UnOY/edit?slide=id.g3412b0dcfc8_1_154#slide=id.g3412b0dcfc8_1_154"
+                            target="_blank" rel="noopener noreferrer">/*portfolio HACK</a>
+                    </div>
+
+                    <div class="work-pointless__intro-text">
+                        <p class="work-pointless__text">
+                            Menzione speciale per Umanesimo Tecnologico: rappresentare mondi possibili, a cura
+                            dell’Accademia di Belle Arti di Brescia SantaGiulia (BS).
+                            <br>Cortometraggio, Animazione 3D e 2D
+                        </p>
+                    </div>
+                </div>
+        </section>
+
+
+
+        <div class="work-pointless__cursor-trailer" id="cursorTrailer" aria-hidden="true">
+            <span class="work-pointless__cursor-arrow">*</span>
+            <span class="work-pointless__cursor-wave" id="cursorTrailerLabel"></span>
+        </div>
+
+
+        <script>
+            (() => {
+                const elements = document.querySelectorAll('[data-fade]');
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                            }
+                        });
+                    },
+                    {
+                        threshold: 0.12,
+                        rootMargin: '0px 0px -8% 0px'
+                    }
+                );
+
+                elements.forEach((el) => observer.observe(el));
+            })();
+
+            (() => {
+                const photos = Array.from(document.querySelectorAll('.work-pointless__draggable-photo-wrap'));
+                if (!photos.length) return;
+
+                let highestZ = 4000;
+
+                const bringToFront = (el) => {
+                    highestZ += 1;
+                    el.style.zIndex = String(highestZ);
+                };
+
+                photos.forEach((photo) => {
+                    let startX = 0;
+                    let startY = 0;
+                    let baseLeft = 0;
+                    let baseTop = 0;
+                    let dragging = false;
+
+                    const onPointerMove = (event) => {
+                        if (!dragging) return;
+                        const dx = event.clientX - startX;
+                        const dy = event.clientY - startY;
+                        photo.style.left = `${baseLeft + dx}px`;
+                        photo.style.top = `${baseTop + dy}px`;
+                    };
+
+                    const onPointerUp = () => {
+                        dragging = false;
+                        photo.classList.remove('is-dragging');
+                        window.removeEventListener('pointermove', onPointerMove);
+                        window.removeEventListener('pointerup', onPointerUp);
+                    };
+
+                    photo.addEventListener('pointerdown', (event) => {
+                        event.preventDefault();
+                        dragging = true;
+                        bringToFront(photo);
+                        photo.classList.add('is-dragging');
+
+                        const parentRect = photo.offsetParent.getBoundingClientRect();
+                        const rect = photo.getBoundingClientRect();
+
+                        if (!photo.style.left) {
+                            photo.style.left = `${rect.left - parentRect.left}px`;
+                        }
+                        if (!photo.style.top) {
+                            photo.style.top = `${rect.top - parentRect.top}px`;
+                        }
+
+                        baseLeft = parseFloat(photo.style.left) || 0;
+                        baseTop = parseFloat(photo.style.top) || 0;
+                        startX = event.clientX;
+                        startY = event.clientY;
+
+                        window.addEventListener('pointermove', onPointerMove);
+                        window.addEventListener('pointerup', onPointerUp);
+                    });
+
+                    photo.addEventListener('click', () => bringToFront(photo));
+                });
+            })();
+
+            (() => {
+                const video = document.getElementById('mainVideo');
+                const playBtn = document.getElementById('playBtn');
+                const backBtn = document.getElementById('backBtn');
+                const forwardBtn = document.getElementById('forwardBtn');
+
+                if (!video || !playBtn || !backBtn || !forwardBtn) return;
+
+                const updatePlayButton = () => {
+                    playBtn.textContent = video.paused ? '▶' : '⏸';
+                    playBtn.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
+                };
+
+                playBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                    updatePlayButton();
+                });
+
+                backBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    video.currentTime = Math.max(0, video.currentTime - 5);
+                });
+
+                forwardBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const duration = Number.isFinite(video.duration) ? video.duration : Infinity;
+                    video.currentTime = Math.min(duration, video.currentTime + 5);
+                });
+
+                video.addEventListener('play', updatePlayButton);
+                video.addEventListener('pause', updatePlayButton);
+                video.addEventListener('loadedmetadata', updatePlayButton);
+
+                updatePlayButton();
+            })();
+
+        </script>
+
+</body>
+
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buttons_Oasis</title>
+    <link rel="icon" type="image/png" href="/Favicon-ButtonsOasis/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/Favicon-ButtonsOasis/favicon.svg" />
+    <link rel="shortcut icon" href="/Favicon-ButtonsOasis/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/Favicon-ButtonsOasis/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Button_Oasis" />
+    <link rel="manifest" href="/Favicon-ButtonsOasis/site.webmanifest" />
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: white;
+            color: black;
+            overflow: hidden;
+        }
+        button {
+            position: absolute;
+            opacity: 1;
+            cursor: pointer;
+        }
+        /* Posizionamento input e mainBtn */
+        #inputTesto {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+        #mainBtn {
+            top: 10px;
+            left: 200px;
+            z-index: 1000;
+            background-color: rgb(252, 215, 243);
+            border-radius: 3px;
+            border: 1px solid #333;
+        }
+        #toggleBtn {
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        /* Stili per duckBtn centrato */
+        #duckBtn {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="inputTesto" placeholder="type here">
+    <button id="mainBtn"> ⋆｡˚ insert word ˚｡⋆</button>
+    <button id="toggleBtn">☾⋆⁺₊✧</button>
+
+    <script>
+        // Lista di 10 possibili messaggi per il cambio casuale
+        const randomMessages = [
+            "ദ്ദ☕（• ˕ •マ", "ก็็็็็็็็็็็็็็็็็็", "🕯", "relax ☕︎", 
+            "You have entered a cyber oasis, inhabited only by wandering buttons. No guardians needed, no spies anywhere: here nothing can threaten your freedom or take your digital existence.",
+            "Oh look! a duck", "⊹ ࣪ ﹏𓊝﹏𓂁﹏⊹ ࣪ ˖", "𖠋", "bla bla bla", "⊹₊⋆"
+        ];
+
+        // Mappatura dei testi personalizzati per i nuovi bottoni
+        const mapping = {
+            "ദ്ദ☕（• ˕ •マ": "©",
+            "ก็็็็็็็็็็็็็็็็็็": "ก็็็็็็็็็็็็็็็็็็",
+            "🕯": ["🕯","⋆.˚"],
+            "relax ☕︎": ["☕︎","₊˚♬˚.","༄"],
+            "You have entered a cyber oasis, inhabited only by wandering buttons. No guardians needed, no spies anywhere: here nothing can threaten your freedom or take your digital existence.": "✦",
+            "Oh look! a duck": "♡",
+            "⊹ ࣪ ﹏𓊝﹏𓂁﹏⊹ ࣪ ˖": ["💣","𓊝","🦈"],
+            "𖠋": "𖠋",
+            "bla bla bla": "💬",
+            "⊹₊⋆": ["⋆","⋆˚☆˖°⋆｡° ✮˖ ࣪ ⊹⋆.˚"]
+        };
+
+        let lastRandom = null;
+        let duckState = 0;
+
+        // Funzione per gestione click del duckBtn
+        function handleDuckClick() {
+            const duckBtn = document.getElementById('duckBtn');
+            if (!duckBtn) return;
+            if (duckState === 0) {
+                duckState = 1;
+                duckBtn.textContent = '𓅷';
+                document.querySelectorAll('button:not(#mainBtn):not(#toggleBtn):not(#duckBtn)').forEach(btn => {
+                    if (btn.textContent === 'Oh look! a duck') btn.textContent = '( ˶°ㅁ°) !!';
+                });
+            } else if (duckState === 1) {
+                duckState = 2;
+                duckBtn.textContent = '˗ˏˋ𓅭ˎˊ˗';
+                document.querySelectorAll('button:not(#mainBtn):not(#toggleBtn):not(#duckBtn)').forEach(btn => {
+                    if (btn.textContent === '( ˶°ㅁ°) !!') btn.textContent = 'Oh look! a duck';
+                });
+            } else {
+                duckBtn.textContent = duckBtn.textContent === '˗ˏˋ𓅭ˎˊ˗' ? '˗ˏˋ 𓅰ˎˊ˗' : '˗ˏˋ𓅭ˎˊ˗';
+            }
+        }
+
+        // Handle random click 20% di probabilità
+        function handleRandomClick(e) {
+            e.stopPropagation();
+            if (Math.random() < 0.2) {
+                const msg = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+                lastRandom = msg;
+
+                // Se il duckBtn esiste e il nuovo msg non è 'Oh look! a duck', rimuovi il duckBtn
+                const existingDuck = document.getElementById('duckBtn');
+                if (existingDuck && msg !== 'Oh look! a duck') {
+                    existingDuck.remove();
+                    duckState = 0;
+                }
+
+                // Aggiorna testo bottoni esistenti
+                document.querySelectorAll('button:not(#mainBtn):not(#toggleBtn):not(#duckBtn)').forEach(btn => btn.textContent = msg);
+
+                // Creazione duckBtn se necessario
+                if (msg === 'Oh look! a duck' && !document.getElementById('duckBtn')) {
+                    const duckBtn = document.createElement('button');
+                    duckBtn.id = 'duckBtn';
+                    duckBtn.textContent = '🥚';
+                    document.body.appendChild(duckBtn);
+                    duckBtn.addEventListener('click', handleDuckClick);
+                }
+            }
+        }
+
+        // Crea nuovo bottone su mouseover
+        function mostraBottone() {
+            const nuovoBottone = document.createElement('button');
+            const inputVal = document.getElementById('inputTesto').value.trim();
+            let text;
+            if (inputVal) {
+                text = inputVal;
+            } else if (lastRandom != null && mapping.hasOwnProperty(lastRandom)) {
+                const mapVal = mapping[lastRandom];
+                if (Array.isArray(mapVal)) text = mapVal[Math.floor(Math.random() * mapVal.length)];
+                else text = mapVal;
+            } else {
+                text = '𝓯𝓻𝓮𝓮 button';
+            }
+            nuovoBottone.textContent = text;
+            nuovoBottone.style.position = 'absolute';
+            const W = window.innerWidth;
+            const H = window.innerHeight;
+            nuovoBottone.style.left = Math.floor(Math.random() * (W - 100)) + 'px';
+            nuovoBottone.style.top = Math.floor(Math.random() * (H - 30)) + 'px';
+            document.body.appendChild(nuovoBottone);
+            // Gestori
+            nuovoBottone.addEventListener('mouseover', mostraBottone);
+            nuovoBottone.addEventListener('click', handleRandomClick);
+
+            // Se bottone bomba, click esplosione
+            if (lastRandom === '⊹ ࣪ ﹏𓊝﹏𓂁﹏⊹ ࣪ ˖') {
+                nuovoBottone.addEventListener('click', function(ev) {
+                    ev.stopImmediatePropagation();
+                    nuovoBottone.textContent = '💥';
+                }, { capture: true, once: true });
+            }
+        }
+
+        // Applica testo da input
+        function applicaTesto() {
+            lastRandom = null;
+            const t = document.getElementById('inputTesto').value.trim() || "PLEAS DON'T TOUCH!";
+            document.querySelectorAll('button:not(#mainBtn):not(#toggleBtn):not(#duckBtn)').forEach(btn => btn.textContent = t);
+        }
+
+        // Creazione ricorsiva
+        function creaBottoneAutomaticamente() {
+            mostraBottone();
+            setTimeout(creaBottoneAutomaticamente, 5000);
+        }
+
+        // Toggle sfondo
+        function toggleBackground() {
+            const body = document.body;
+            const toggleBtn = document.getElementById('toggleBtn');
+            if (body.style.backgroundColor === 'black') {
+                body.style.backgroundColor = 'white';
+                body.style.color = 'black';
+                toggleBtn.textContent = '☾⋆⁺₊✧';
+            } else {
+                body.style.backgroundColor = 'black';
+                body.style.color = 'white';
+                toggleBtn.textContent = '☀︎.ೃ࿔*:･';
+            }
+        }
+
+        // Contatore mainBtn
+        let mainClickCount = 0;
+        const mainMessages = [
+            "Opss", "Sorry.. °◠°", "okay, stop now ⚠︎", "DO NOT TOUCH!", "ᶠᶸᶜᵏᵏᵧₒᵤ! I'm leaving", ""
+        ];
+        const mainBtn = document.getElementById('mainBtn');
+        mainBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            mainClickCount = Math.min(mainClickCount + 1, mainMessages.length);
+            const txt = mainMessages[mainClickCount - 1];
+            mainBtn.textContent = txt;
+            document.querySelectorAll('button:not(#mainBtn):not(#toggleBtn):not(#duckBtn)').forEach(btn => btn.textContent = txt);
+        });
+
+        // Event listeners
+        document.getElementById('toggleBtn').addEventListener('click', toggleBackground);
+        mainBtn.addEventListener('click', handleRandomClick);
+        creaBottoneAutomaticamente();
+    </script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Backspace by HACK</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: transparent;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #4e4d4d;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .work-page {
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 3.5rem 2.5rem 5rem;
+            color: #4e4d4d;
+        }
+
+        .work-page * {
+            box-sizing: border-box;
+        }
+
+        .work-pointless__content-width {
+            width: 80%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .work-pointless__hero {
+            margin-bottom: 2.6rem;
+        }
+
+        .work-pointless__year {
+            margin: 0 0 0.35rem 0;
+            font-size: 1rem;
+            padding-top: 1rem;
+            line-height: 1;
+            font-weight: 400;
+            font-family: "Crimson Text", serif;
+            color: #666666;
+            text-align: left;
+        }
+
+        .work-pointless__title {
+            text-align: center;
+            padding-top: 0rem;
+            margin: 0 0 0.45rem 0;
+            font-size: 36px;
+            line-height: 0.95;
+            font-weight: 300;
+            font-family: "Crimson Text", serif;
+            color: #4E4D4D;
+        }
+
+        .work-pointless__meta {
+            text-align: center;
+            margin: 0 0 1.5rem 0;
+            font-size: 16px;
+            font-family: "Crimson Text", serif;
+            color: #666666;
+            text-transform: none;
+            font-style: italic;
+        }
+
+        .work-pointless__section {
+            margin-top: 2.6rem;
+        }
+
+        .work-pointless__text {
+            margin-top: 0rem;
+            font-size: 10px;
+            line-height: 1.2;
+            color: #3E3E3E;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        .work-pointless__hero-media {
+            margin-top: 0rem;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid rgba(78, 77, 77, 0.08);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 211, 255, 0.5) 0%, rgba(255, 255, 255, 0.85) 100%);
+            position: relative;
+        }
+
+        .work-pointless__carousel {
+            background: #ffffff;
+        }
+
+        .work-pointless__carousel-track {
+            position: absolute;
+            inset: 0;
+        }
+
+        .work-pointless__carousel-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .work-pointless__carousel-image.is-active {
+            opacity: 1;
+        }
+
+        .work-pointless__carousel-zone {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 3;
+            border: 0;
+            padding: 0;
+            background: transparent;
+            cursor: none;
+        }
+
+        .work-pointless__carousel-zone--left {
+            left: 0;
+        }
+
+        .work-pointless__carousel-zone--right {
+            right: 0;
+        }
+
+        .work-pointless__carousel-zone:focus-visible {
+            outline: 1px solid rgba(78, 77, 77, 0.35);
+            outline-offset: -1px;
+        }
+
+        .work-pointless__cursor-trailer {
+            position: fixed;
+            left: 0;
+            top: 0;
+            transform: translate(18px, -50%);
+            pointer-events: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            opacity: 0;
+            z-index: 6000;
+            transition: opacity 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .work-pointless__cursor-trailer.is-active {
+            opacity: 1;
+        }
+
+        .work-pointless__cursor-arrow {
+            font-family: "Crimson Text", serif;
+            font-size: 1rem;
+            line-height: 1;
+            color: #ffffff;
+        }
+
+        .work-pointless__cursor-wave {
+            display: inline-flex;
+            align-items: center;
+            font-family: "Crimson Text", serif;
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 3;
+            text-shadow: 0 0 3px #ffffff;
+            color: #ffffffd2;
+        }
+
+        .work-pointless__cursor-wave span {
+            display: inline-block;
+            animation: workExonWave 1.15s ease-in-out infinite;
+        }
+
+        .work-pointless__cursor-wave span:nth-child(2) { animation-delay: 0.05s; }
+        .work-pointless__cursor-wave span:nth-child(3) { animation-delay: 0.10s; }
+        .work-pointless__cursor-wave span:nth-child(4) { animation-delay: 0.15s; }
+        .work-pointless__cursor-wave span:nth-child(5) { animation-delay: 0.20s; }
+        .work-pointless__cursor-wave span:nth-child(6) { animation-delay: 0.25s; }
+        .work-pointless__cursor-wave span:nth-child(7) { animation-delay: 0.30s; }
+        .work-pointless__cursor-wave span:nth-child(8) { animation-delay: 0.35s; }
+
+        @keyframes workExonWave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .work-pointless__side-actions {
+            margin-top: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.05rem;
+        }
+
+        .work-pointless__action-link {
+            font-family: "Crimson Text", serif;
+            font-size: 0.92rem;
+            line-height: 1.15;
+            color: #FF56FF;
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            border: 0;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .work-pointless__action-link:hover {
+            color: #FF56FF;
+            opacity: 0.8;
+        }
+
+        .work-pointless__intro-text {
+            min-width: 0;
+            padding-top: 0.8rem;
+        }
+
+        .work-pointless__pdf-wrap {
+            width: 100%;
+            margin-top: 2.2rem;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .work-pointless__pdf-wrap.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .work-pointless__pdf-frame {
+            width: 100%;
+            height: 760px;
+            border: 1px solid rgba(78, 77, 77, 0.08);
+            border-radius: 0.5rem;
+            background: #fff;
+            display: block;
+        }
+
+        [data-fade] {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(80, 80, 80, 0.3);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(80, 80, 80, 0.6);
+        }
+
+        @media (max-width: 860px) {
+            .work-pointless__content-width {
+                width: 86%;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .work-page {
+                padding: 2rem 1.2rem 3rem;
+            }
+
+            .work-pointless__title {
+                padding-top: 2rem;
+            }
+
+            .work-pointless__content-width {
+                width: 100%;
+            }
+
+            .work-pointless__pdf-frame {
+                height: 560px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="work-page work-pointless">
+        <section class="work-pointless__hero" data-fade>
+            <div class="work-pointless__content-width">
+                <p class="work-pointless__year">2025</p>
+                <h1 class="work-pointless__title">Backspace</h1>
+                <p class="work-pointless__meta">Virtual Reality · Spatial.io · with HACK</p>
+            </div>
+        </section>
+
+        <section class="work-pointless__section" data-fade>
+            <div class="work-pointless__content-width">
+                <div class="work-pointless__hero-media work-pointless__carousel" data-fade id="websiteTrigger" aria-label="Backspace image carousel">
+                    <button class="work-pointless__carousel-zone work-pointless__carousel-zone--left" type="button" aria-label="Previous image"></button>
+                    <button class="work-pointless__carousel-zone work-pointless__carousel-zone--right" type="button" aria-label="Next image"></button>
+
+                    <div class="work-pointless__carousel-track">
+                        <img class="work-pointless__carousel-image is-active" src="content/backspace-img.png" alt="Backspace visual 0">
+                        <img class="work-pointless__carousel-image is-active" src="content/backspace-img1.png" alt="Backspace visual 1">
+                        <img class="work-pointless__carousel-image" src="content/backspace-img2.png" alt="Backspace visual 2">
+                        <img class="work-pointless__carousel-image" src="content/backspace-img3.png" alt="Backspace visual 3">
+                        <img class="work-pointless__carousel-image" src="content/backspace-img4.png" alt="Backspace visual 4">
+                        <img class="work-pointless__carousel-image" src="content/backspace-img5.png" alt="Backspace visual 5">
+                    </div>
+                </div>
+
+                <div class="work-pointless__side-actions">
+                    <a class="work-pointless__action-link" href="content/backspace-paper.pdf" target="_blank" rel="noopener noreferrer">/*Enter</a>
+                </div>
+
+                <div class="work-pointless__intro-text">
+                    <p class="work-pointless__text">
+                        Lo spazio limite dell’evento/mostra Backspace trova la sua sede nel Metaverso, una cornice entro cui il fruitore, divenuto utente, è chiamato a interfacciarsi con l'ambiente digitale ove la materia fisica dell'oggetto si traduce nella manifestazione dell“iper-oggetto” (secondo la definizione di Timothy Morton). Si disegna dunque un tracciato immersivo e tridimensionale, progettato ad hoc tramite il software open source Unity e la piattaforma Spatial.Io, a cui si deve la fruibilità tramite la rete e l’accessibilità a un vasto pubblico.
+                    </p>
+                </div>
+
+                <div class="work-pointless__pdf-wrap" id="paperSection">
+                    <iframe class="work-pointless__pdf-frame" src="content/backspace-paper.pdf" title="Backspace paper PDF"></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="work-pointless__cursor-trailer" id="cursorTrailer" aria-hidden="true">
+        <span class="work-pointless__cursor-arrow">*</span>
+        <span class="work-pointless__cursor-wave" id="cursorTrailerLabel"></span>
+    </div>
+
+    <script>
+        (() => {
+            const elements = document.querySelectorAll('[data-fade], #paperSection');
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                        }
+                    });
+                },
+                {
+                    threshold: 0.12,
+                    rootMargin: '0px 0px -8% 0px'
+                }
+            );
+
+            elements.forEach((el) => observer.observe(el));
+        })();
+
+        (() => {
+            const trigger = document.getElementById('websiteTrigger');
+            const cursorTrailer = document.getElementById('cursorTrailer');
+            const cursorTrailerLabel = document.getElementById('cursorTrailerLabel');
+
+            if (!trigger) return;
+
+            const images = Array.from(trigger.querySelectorAll('.work-pointless__carousel-image'));
+            const leftZone = trigger.querySelector('.work-pointless__carousel-zone--left');
+            const rightZone = trigger.querySelector('.work-pointless__carousel-zone--right');
+
+            if (!images.length || !leftZone || !rightZone) return;
+
+            let currentIndex = 0;
+
+            const setLabel = (text) => {
+                cursorTrailerLabel.innerHTML = text
+                    .split('')
+                    .map((letter) => `<span>${letter === ' ' ? '&nbsp;' : letter}</span>`)
+                    .join('');
+            };
+
+            const showImage = (index) => {
+                currentIndex = (index + images.length) % images.length;
+                images.forEach((image, imageIndex) => {
+                    image.classList.toggle('is-active', imageIndex === currentIndex);
+                });
+            };
+
+            const moveTrailer = (event, label) => {
+                cursorTrailer.style.left = `${event.clientX}px`;
+                cursorTrailer.style.top = `${event.clientY}px`;
+                setLabel(label);
+            };
+
+            const activateTrailer = () => cursorTrailer.classList.add('is-active');
+            const deactivateTrailer = () => cursorTrailer.classList.remove('is-active');
+
+            leftZone.addEventListener('mouseenter', activateTrailer);
+            rightZone.addEventListener('mouseenter', activateTrailer);
+            leftZone.addEventListener('mouseleave', deactivateTrailer);
+            rightZone.addEventListener('mouseleave', deactivateTrailer);
+
+            leftZone.addEventListener('mousemove', (event) => moveTrailer(event, 'Previous'));
+            rightZone.addEventListener('mousemove', (event) => moveTrailer(event, 'Next'));
+
+            leftZone.addEventListener('click', () => showImage(currentIndex - 1));
+            rightZone.addEventListener('click', () => showImage(currentIndex + 1));
+
+            showImage(0);
+        })();
+    </script>
+</body>
+
+</html>
