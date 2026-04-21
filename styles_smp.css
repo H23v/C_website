@@ -1,159 +1,149 @@
 :root {
   --pink-0: #fcd1fc;
-  /* rosina top */
-  --white: #FFFFFF;
-  --text-rose: #FF56FF;
-  --text-rose-2: #FEAEFE;
-  --gray-1: #7D7D7D;
-  --charcoal: #4E4D4D;
+  --white: #ffffff;
+  --text-rose: #ff56ff;
+  --text-rose-2: #feaefe;
+  --gray-1: #7d7d7d;
+  --charcoal: #4e4d4d;
   --ascii: #818181;
 }
 
-/* reset base */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
-  /* niente alone azzurrino al tap */
 }
 
 html,
 body {
   height: 100%;
   overflow: hidden;
-  /* blocca lo scroll */
 }
 
 body {
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: #1a1a1a;
-  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 55%);
+  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 58%);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background 0.35s ease;
 }
 
-/* quando sono in modalità Me? sfumo a bianco pieno */
-body.me-view {
-  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 55%);
-}
-
-/* niente outline blu quando clicchi */
 button,
-[role="button"],
-a {
+a,
+[role="button"] {
   -webkit-tap-highlight-color: transparent;
 }
 
 button:focus,
-[role="button"]:focus,
-a:focus {
+a:focus,
+[role="button"]:focus {
   outline: none;
 }
 
-/* helper colore rose2 (usata anche su hack-block) */
 .rose2 {
   color: var(--text-rose-2);
 }
 
-/* Brand come desktop, solo un filo più vicino ai bordi */
-.homebrand {
-  position: fixed;
-  left: 1.25rem;
-  top: 2.4rem;
-  text-decoration: none;
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-  user-select: none;
-  line-height: 1;
-  font-size: 24px;
-  z-index: 41;
-}
-
-.homebrand-symbol {
-  color: var(--charcoal);
-}
-
-.homebrand-text {
-  color: #FFFFFF;
-  background: var(--charcoal);
-}
-
-/* Palco mobile */
 .stage {
   position: relative;
   width: 100vw;
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 5rem 1.5rem 3.5rem;
-  transition: opacity 0.35s ease;
+  padding: 7rem 1.5rem 5rem;
 }
 
-/* Personaggio in basso, più grande */
-.personaggio {
+.mobile-desk-wrap {
   position: fixed;
-  left: 60%;
-  bottom: 2.8rem;
-  transform: translateX(-50%);
+  top: .35rem;
+  left: 50%;
+  width: min(92vw, 420px);
+  height: min(42vh, 340px);
+  transform: translateX(-50%) translateY(-115%);
+  z-index: 9;
+  animation: deskDropIn 1.15s cubic-bezier(.22,.8,.2,1) forwards;
+}
+
+.mobile-desk-model {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --progress-bar-height: 0px;
+  --poster-color: transparent;
+  --progress-bar-color: transparent;
+}
+
+.mobile-desk-model::part(default-progress-bar),
+.mobile-desk-model::part(default-ar-button) {
+  display: none;
+}
+
+@keyframes deskDropIn {
+  to { transform: translateX(-50%) translateY(0); }
+}
+
+.personaggio {
   text-align: center;
   white-space: nowrap;
   pointer-events: auto;
-  z-index: 15;
   cursor: pointer;
-  transition: opacity 0.35s ease;
 }
 
-.personaggio .sparkles {
+.home-personaggio {
+  position: fixed;
+  left: 50%;
+  bottom: 6.9rem;
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+.home-personaggio .sparkles,
+.home-personaggio .ascii-character,
+.me-personaggio .sparkles,
+.me-personaggio .ascii-character {
   pointer-events: none;
   display: block;
   font-size: 1.1rem;
   color: var(--ascii);
+}
+
+.home-personaggio .sparkles,
+.me-personaggio .sparkles {
+  margin-bottom: .04rem;
   transform: translateX(-20%);
-  margin-bottom: .01rem;
 }
 
-.personaggio .ascii-character {
-  pointer-events: none;
-  display: block;
-  font-size: 1.1rem;
-  color: var(--ascii);
-}
-
-/* blocca le animazioni quando selezionato (come desktop) */
-.personaggio.selected .sparkles,
-.personaggio.selected .ascii-character {
+.home-personaggio.selected .sparkles,
+.home-personaggio.selected .ascii-character {
   animation-play-state: paused !important;
 }
 
-.personaggio.selected .ascii-character::before,
-.personaggio.selected .ascii-character::after {
+.home-personaggio.selected .ascii-character::before,
+.home-personaggio.selected .ascii-character::after {
   content: none !important;
   animation: none !important;
 }
 
-/* Menu: colonna sopra il personaggio */
-.menu {
+.mobile-main-menu {
   position: fixed;
   left: 50%;
-  bottom: 7.5rem;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -6%);
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
   align-items: center;
-  z-index: 10;
-  transition: opacity 0.35s ease;
+  justify-content: center;
+  gap: 1.35rem;
+  z-index: 20;
+  transition: opacity .35s ease;
 }
 
-/* Bottoni stile link, con underline animata ereditata da animations.css (.menu-link::after) */
-.menu-link {
+.menu-link,
+.me-top-link {
   background: transparent;
   border: none;
-  padding: 0.15rem 0.2rem;
-  font-size: 0.95rem;
+  padding: .15rem .1rem;
+  font-size: .96rem;
   color: var(--gray-1);
   text-decoration: none;
   white-space: nowrap;
@@ -161,42 +151,41 @@ a:focus {
   position: relative;
 }
 
-/* posizioni personalizzate dei 4 tasti */
-.menu-artwork {
-  position: relative;
-  left: -75px;
-  top: 110px;
+.menu-link:hover,
+.me-top-link:hover {
+  opacity: .72;
 }
 
-.menu-cv {
-  position: relative;
-  left: -5px;
-  top: 50px;
-}
-
-.menu-me {
-  position: relative;
-  left: 40px;
-  top: -10px;
-}
-
-.menu-img {
-  position: relative;
-  left: 90px;
-  top: -70px;
-}
-
-.menu-link:hover {
-  opacity: 0.7;
-}
-
-/* stato “attivo” (se in futuro lo useremo) */
 .menu-link.active {
   color: var(--text-rose);
-  opacity: .85;
+  opacity: .9;
 }
 
-/* Nuvoletta ASCII adattata per mobile */
+.mobile-footer-brand {
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  text-decoration: none;
+  display: inline-flex;
+  gap: .45rem;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 18px;
+  z-index: 40;
+}
+
+.mobile-footer-symbol {
+  color: var(--charcoal);
+}
+
+.mobile-footer-text {
+  color: #fff;
+  background: var(--charcoal);
+  padding: 0 .18rem;
+}
+
 .ascii-bubble[hidden] {
   display: none;
 }
@@ -204,7 +193,7 @@ a:focus {
 .ascii-bubble {
   position: absolute;
   left: 0rem;
-  bottom: 13rem;
+  bottom: 7.8rem;
   transform: translateX(-50%);
   pointer-events: auto;
   user-select: none;
@@ -215,14 +204,10 @@ a:focus {
   color: var(--ascii);
   opacity: 0;
   z-index: 18;
-  transition: opacity 0.28s ease;
 }
 
-/* animazione di comparsa + leggero float (come desktop) */
 .ascii-bubble.show {
-  animation:
-    asciiFade .7s ease-out forwards,
-    cloudFloat 3s ease-in-out .9s infinite alternate;
+  animation: asciiFade .7s ease-out forwards, cloudFloat 3s ease-in-out .9s infinite alternate;
 }
 
 @keyframes asciiFade {
@@ -233,156 +218,96 @@ a:focus {
 }
 
 @keyframes cloudFloat {
-  0% {
-    transform: translate(-50%, 0);
-  }
-
-  50% {
-    transform: translate(-50%, -5px);
-  }
-
-  100% {
-    transform: translate(-50%, 0);
-  }
+  0% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -5px); }
+  100% { transform: translate(-50%, 0); }
 }
 
-/* icone cliccabili dentro la nuvoletta */
-.ascii-bubble .icon-ribbon,
-.ascii-bubble .icon-idea {
-  cursor: pointer;
-  transition: transform .15s ease, filter .15s ease;
-}
-
-.ascii-bubble .icon-ribbon:hover,
-.ascii-bubble .icon-idea:hover {
-  transform: scale(1.08);
-  filter: drop-shadow(0 0 4px rgba(255, 86, 255, .6));
-}
-
-/* focus da tastiera (accessibilità) */
-.ascii-bubble .icon-ribbon:focus,
-.ascii-bubble .icon-idea:focus {
-  outline: none;
-  text-shadow: 0 0 6px rgba(255, 86, 255, .7);
-}
-
-/* ===== Modalità Me? : fade out/in ===== */
-
-/* quando me-view è attivo:
-   - spariscono personaggio, menu, bubble, palco */
 body.me-view .stage,
-body.me-view .personaggio,
-body.me-view .menu,
-body.me-view .ascii-bubble {
+body.me-view .home-personaggio,
+body.me-view .mobile-main-menu,
+body.me-view .ascii-bubble,
+body.work-view .stage,
+body.work-view .home-personaggio,
+body.work-view .mobile-main-menu,
+body.work-view .ascii-bubble {
   opacity: 0;
   pointer-events: none;
 }
 
-/* ===== Bio-block mobile ===== */
-.bio-block {
+.me-view-mobile,
+.work-panel-mobile {
   position: fixed;
-  top: 6rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: .65rem;
-  line-height: 1.15;
-  width: min(90vw, 780px);
-  color: #434343;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
+  inset: 0;
   z-index: 30;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.bio-block .riga {
+.me-view-mobile::-webkit-scrollbar,
+.work-panel-mobile::-webkit-scrollbar,
+.mobile-cv-scroll::-webkit-scrollbar,
+.me-panel-mobile::-webkit-scrollbar {
+  display: none;
+}
+
+.me-view-mobile {
+  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 26%, var(--white) 100%);
+  padding: 1rem 1.1rem 6rem;
+}
+
+.me-top-nav {
+  position: sticky;
+  top: .7rem;
+  z-index: 50;
+  width: fit-content;
+  margin: 0 auto 1.1rem;
   display: flex;
-  justify-content: space-between;
-  gap: 0.75rem;
-  white-space: nowrap;
+  gap: 1.2rem;
+  justify-content: center;
 }
 
-.bio-block .r1 {
-  color: var(--text-rose);
-  transform: translateX(.6rem) translateY(0rem);
+.me-personaggio {
+  position: relative;
+  z-index: 35;
+  width: fit-content;
+  margin: 2.8rem auto .95rem;
 }
 
-.bio-block .r2 {
-  color: var(--text-rose-2);
-  transform: translateX(.6rem) translateY(0rem);
+.bio-block,
+.hack-block,
+.me-panel-mobile,
+.mobile-cv-section {
+  width: min(92vw, 520px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.bio-block .r3 {
-  color: var(--text-rose-2);
-  transform: translateX(7.9rem) translateY(-0.7rem);
-}
-
-.bio-block .r4 {
-  color: var(--text-rose-2);
-  transform: translateX(13.7rem) translateY(-0.7rem);
-}
-
-.bio-block .r5 {
-  color: var(--text-rose-2);
-  transform: translateX(12.7rem) translateY(-0.7rem);
-}
-
-.bio-block .r6 {
-  color: var(--text-rose-2);
-  transform: translateX(17.8rem) translateY(-0.7rem);
-}
-
-/* in modalità Me? si vede */
-body.me-view .bio-block {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ===== HACK-block mobile (nuovo, come gli altri blocchi) ===== */
-
-.hack-block {
-  position: fixed;
-  top: 8.4rem; /* leggermente sotto la bio */
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: .65rem;
+.bio-block {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  font-size: .66rem;
   line-height: 1.15;
-  width: min(90vw, 780px);
-  color: var(--text-rose-2);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-  z-index: 30;
+  margin-top: .35rem;
 }
 
+.bio-block .riga,
 .hack-block .riga {
   display: flex;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: .75rem;
   white-space: nowrap;
 }
 
-.hack-block .h1 {
-  transform: translateX(3rem) translateY(.3rem);
-}
-
-.hack-block .h2 {
-  transform: translateX(3rem) translateY(.3rem);
-}
-
-.hack-block .h3 {
-  transform: translateX(9.6rem) translateY(.3rem);
-}
-
-.hack-block .h4 {
-  transform: translateX(12.9rem) translateY(.3rem);
-}
-
-
-/* in modalità Me? si vede anche l'hack-block */
-body.me-view .hack-block {
-  opacity: 1;
-  pointer-events: auto;
-}
+.bio-block .r1 { color: var(--text-rose); }
+.bio-block .r2,
+.bio-block .r3,
+.bio-block .r4,
+.bio-block .r5,
+.bio-block .r6 { color: var(--text-rose-2); }
 
 .bio-block a,
 .hack-block a {
@@ -395,67 +320,44 @@ body.me-view .hack-block {
   text-decoration: underline;
 }
 
+.hack-block {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  font-size: .66rem;
+  line-height: 1.15;
+  margin-top: .9rem;
+}
+
 .text-fade-mask {
-  position: fixed;
-  left: 0;
-  top: 12rem;       /* la regolerai tu */
-  width: 100vw;
-  height: 40px;
-  background: linear-gradient(
-    to bottom,
-    #ffe7ff 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  width: min(92vw, 520px);
+  height: 34px;
+  margin: .95rem auto -.3rem;
+  background: linear-gradient(to bottom, #ffe7ff 0%, rgba(255,255,255,0) 100%);
   pointer-events: none;
-  z-index: 21;
-
-  opacity: 0;                /* di default NON visibile */
-  transition: opacity .3s ease;
 }
-
-/* la linea sfumata si vede solo in modalità Me? */
-body.me-view .text-fade-mask {
-  opacity: 1;
-}
-
-/* ===== Pannello Me? mobile ===== */
 
 .me-panel-mobile {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 12rem;
-  width: min(95vw, 750px);
-  max-height: calc(100vh - 15rem);
-  overflow-y: auto;
-  padding: 2rem;
-  opacity: 0;
-  transition: opacity 0.35s ease;
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  max-height: none;
+  overflow: visible;
+  padding: .4rem 0 0;
   z-index: 20;
-
-  background: #ff000000;           /* sfondo pieno per la dissolvenza */
-  -ms-overflow-style: none;      /* IE / Edge: niente scrollbar */
-  scrollbar-width: none;         /* Firefox: niente scrollbar */
+  background: transparent;
 }
 
-/* nascondi scrollbar su WebKit */
-.me-panel-mobile::-webkit-scrollbar {
-  display: none;
-}
-
-/* toggle lingua, ripreso dal desktop */
 .lang-toggle {
   display: inline-flex;
   align-items: baseline;
   gap: 4px;
   font-size: 1rem;
   color: #5a5959;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   user-select: none;
-}
-
-.lang-toggle .slash {
-  opacity: 1;
 }
 
 .lang-btn {
@@ -470,7 +372,6 @@ body.me-view .text-fade-mask {
   transition: color .15s ease, text-decoration-color .15s ease, opacity .15s ease;
 }
 
-/* attivo: forte e sottolineato */
 .lang-btn.active {
   color: var(--charcoal);
   text-decoration-color: var(--charcoal);
@@ -478,43 +379,159 @@ body.me-view .text-fade-mask {
   opacity: 1;
 }
 
-/* NON attivo: più chiaro/opaco */
 .lang-btn:not(.active) {
   color: #b8b8b8;
-  opacity: 0.6;
+  opacity: .6;
 }
 
 .panel-content {
-  font-size: .75rem;
+  font-size: .76rem;
   color: #5a5959;
   white-space: pre-wrap;
+  line-height: 1.45;
 }
 
-/* in modalità Me? si vede il pannello */
-body.me-view .me-panel-mobile {
+.mobile-cv-section {
+  margin-top: 1.75rem;
+  padding-bottom: 1.5rem;
+}
+
+.mobile-cv-title {
+  margin: 0 0 .9rem 0;
+  font-size: .9rem;
+  color: var(--gray-1);
+}
+
+.mobile-cv-scroll {
+  max-height: none;
+  overflow: visible;
+}
+
+.cv-panel-content {
+  margin: 0;
+  padding: 0 0 2rem 0;
+  color: #434343;
+  font-size: .78rem;
+  line-height: 1.34;
+}
+
+.cv-section-title {
+  margin: 0 0 .9rem 0;
+  color: #434343;
+  letter-spacing: .06em;
+}
+
+.cv-subtitle {
+  margin: .8rem 0 .35rem 0;
+  color: #434343;
+}
+
+.cv-line,
+.cv-line--link {
+  display: block;
+  margin: 0 0 .32rem 0;
+  color: #434343;
+  text-decoration: none;
+}
+
+.cv-line--link,
+.cv-line--link .cv-body,
+.cv-line--link .cv-emph,
+.cv-line--link .cv-addition {
+  transition: color 2s ease, opacity .22s ease;
+}
+
+.cv-line--link:hover,
+.cv-line--link:hover .cv-body,
+.cv-line--link:hover .cv-emph,
+.cv-line--link:hover .cv-addition {
+  color: #ff8dff;
   opacity: 1;
+  transition: color .54s ease;
 }
 
-/* piccola ottimizzazione per schermi molto stretti */
-@media (max-width: 360px) {
-  .menu-link {
-    font-size: 0.85rem;
-  }
-
-  .ascii-bubble {
-    font-size: 11px;
-  }
-
-  .bio-block {
-    font-size: .68rem;
-  }
-
-  .hack-block {
-    font-size: .68rem;
-  }
-
-  .panel-content {
-    font-size: .68rem;
-  }
+.cv-date {
+  color: #9f9f9f;
 }
 
+.cv-addition {
+  color: #9f9f9f;
+  font-style: italic;
+}
+
+.cv-emph {
+  font-style: italic;
+}
+
+.cv-separator {
+  margin: .5rem 0;
+  color: #9f9f9f;
+}
+
+.cv-line--space {
+  height: .55rem;
+}
+
+.work-panel-mobile {
+  background: linear-gradient(to bottom, var(--pink-0) 0%, var(--white) 24%, var(--white) 100%);
+  padding: 4.8rem 1.1rem 5.8rem;
+}
+
+.work-panel-header {
+  width: min(92vw, 520px);
+  margin: 0 auto 1.2rem;
+  font-size: .95rem;
+  color: var(--gray-1);
+}
+
+.work-list-mobile {
+  width: min(92vw, 520px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.work-card-mobile {
+  display: block;
+  text-decoration: none;
+  color: var(--charcoal);
+}
+
+.work-card-mobile.is-disabled {
+  opacity: .62;
+  pointer-events: none;
+}
+
+.work-card-mobile-title {
+  font-size: .9rem;
+  color: var(--charcoal);
+  margin-bottom: .25rem;
+}
+
+.work-card-mobile-meta {
+  font-size: .72rem;
+  line-height: 1.35;
+  color: #8b8b8b;
+}
+
+@media (max-width: 380px) {
+  .mobile-desk-wrap {
+    width: 94vw;
+    height: 34vh;
+  }
+
+  .mobile-main-menu {
+    gap: 1rem;
+  }
+
+  .menu-link,
+  .me-top-link {
+    font-size: .9rem;
+  }
+
+  .panel-content,
+  .cv-panel-content {
+    font-size: .72rem;
+  }
+}

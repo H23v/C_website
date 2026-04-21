@@ -1,6 +1,6 @@
 {
-  "name": "©_WebSite",
-  "short_name": "©_WebSite",
+  "name": "/*Chiara_Bertasini",
+  "short_name": "©hiara",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffd4ff",
+  "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone"
 }
