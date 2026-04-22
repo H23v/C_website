@@ -89,7 +89,7 @@ window.MYARTWORK = [
     posizione: 4,
     section: ["html"],
     group: "artistic work",
-    page: "work/losai.html",
+    page: "work/lo-sai.html",
     external: false
   },
   {
