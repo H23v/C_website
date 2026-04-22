@@ -27,9 +27,9 @@ window.WORK_GALLERIES = {
     meta: "3D animation · Platonic (coming soon)",
     text: "",
     items: [
-      { type: "image", src: "opere/dirty-image-4.png", alt: "(dirty) Image 4" },
-      { type: "image", src: "opere/platonic-b.png", alt: "Platonic variation B" },
-      { type: "image", src: "opere/platonic-c.png", alt: "Platonic variation C" }
+      { type: "image", src: "opere/dirty-image-4.jpg", alt: "(dirty) Image 4" },
+      { type: "image", src: "opere/platonic-b.jpg", alt: "Platonic variation B" },
+      { type: "image", src: "opere/platonic-c.jpg", alt: "Platonic variation C" }
     ]
   },
 
@@ -50,8 +50,8 @@ window.WORK_GALLERIES = {
     meta: "3D animation · Tesserato",
     text: "",
     items: [
-      { type: "image", src: "opere/dirty-image-5.png", alt: "(dirty) Image 5" },
-      { type: "image", src: "opere/tesserato-2.png", alt: "tesserato variation" },
+      { type: "image", src: "opere/dirty-image-5.jpg", alt: "(dirty) Image 5" },
+      { type: "image", src: "opere/tesserato-2.jpg", alt: "tesserato variation" },
       { type: "video", src: "opere/tesserato-video.mkv", alt: "tesserato video" }
     ]
   }
