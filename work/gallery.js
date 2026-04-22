@@ -5,8 +5,8 @@ window.WORK_GALLERIES = {
     meta: "3D animation · Tiger Fish (coming soon)",
     text: "",
     items: [
-      { type: "image", src: "opere/dirty-image-2.png", alt: "(dirty) Image 2" },
-      { type: "image", src: "opere/fish-b.png", alt: "Fish variation" }
+      { type: "image", src: "opere/dirty-image-2.jpg", alt: "(dirty) Image 2" },
+      { type: "image", src: "opere/fish-b.jpg", alt: "Fish variation" }
     ]
   },
 
