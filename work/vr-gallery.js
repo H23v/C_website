@@ -18,7 +18,11 @@ window.WORK_GALLERIES = {
     items: [
       { type: "image", src: "opere/vrdrawing-2.jpg" },
       { type: "image", src: "opere/gigante-2.jpg" },
-      { type: "image", src: "opere/gigante-3.jpg" }
+      { type: "image", src: "opere/gigante-4.jpg" },
+      { type: "image", src: "opere/gigante-5.jpg" },
+      { type: "image", src: "opere/gigante-6.jpg" },
+      { type: "image", src: "opere/gigante-7.jpg" }
+
     ]
   }
 };
